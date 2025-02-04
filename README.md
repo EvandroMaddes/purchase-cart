@@ -31,3 +31,8 @@ podman run --rm --name cart_service_run -v ${pwd}:/mnt -p 9090:9090 -w /mnt subi
 
 - the flag `--rm` is used to delete the container after the task fot it is complete
 - the flag `--name` is used to set the container name
+
+Under the root folder are available also `mvnw` scripts:
+
+* Allows anyone who clones / checks-out this repo to build the project without having to install Maven first.
+* Ensures that the version of Maven in use is the version with which this project is compatible.
