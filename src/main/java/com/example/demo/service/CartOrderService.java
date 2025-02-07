@@ -145,7 +145,7 @@ public class CartOrderService {
     }
 
     /**
-     * Multiply passed value by product quantity
+     * Multiply input value by product quantity
      *
      * @param value   value to be multiplied by quantity
      * @param product product used to retrieve quantity
