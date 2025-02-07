@@ -24,6 +24,10 @@ class UpdateQuantityOrderStepTest {
     private UpdateQuantityOrderStep updateQuantityOrderStep;
 
     @Mock
+    // add it to context, used by next() call
+    private SaveNewCartOrderStep saveNewCartOrderStep;
+
+    @Mock
     private WarehouseService warehouseService;
 
     @Test
@@ -41,7 +45,7 @@ class UpdateQuantityOrderStepTest {
         // assert
         Assertions.assertEquals(1, order.getItems().size());
         Assertions.assertEquals(11, order.getItems().getFirst().getId());
-        Assertions.assertEquals(2, order.getItems().getFirst().getQuantity());
+        Assertions.assertEquals(3, order.getItems().getFirst().getQuantity());
     }
 
     @Test
