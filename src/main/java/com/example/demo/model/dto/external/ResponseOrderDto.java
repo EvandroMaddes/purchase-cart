@@ -1,6 +1,5 @@
 package com.example.demo.model.dto.external;
 
-import com.example.demo.model.dto.PurchaseProductDto;
 import lombok.Builder;
 import lombok.Getter;
 
