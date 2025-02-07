@@ -3,7 +3,6 @@ package com.example.demo.service;
 import com.example.demo.exception.ProductNotFoundException;
 import com.example.demo.model.entity.ProductEntity;
 import com.example.demo.repository.IProductRepository;
-import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +25,7 @@ class ProductServiceTest {
     private IProductRepository productRepository;
 
     @Test
-    void findByProductEntity_productIsAvailable() throws BadRequestException, ProductNotFoundException {
+    void findByProductEntity_productIsAvailable() throws ProductNotFoundException {
         // arrange
         ProductEntity mockProduct = new ProductEntity();
         mockProduct.setPriceValue(BigDecimal.TEN);
@@ -44,13 +43,13 @@ class ProductServiceTest {
     }
 
     @Test
-    void findByProductEntity_productIdIsNull_throwsBadRequestException() {
+    void findByProductEntity_productIdIsNull_throwsIllegalArgumentException() {
         try {
             // act
             productService.findByProductId(null);
         } catch (Exception e) {
             //assert
-            Assertions.assertInstanceOf(BadRequestException.class, e);
+            Assertions.assertInstanceOf(IllegalArgumentException.class, e);
             verifyNoInteractions(productRepository);
         }
     }

@@ -8,7 +8,6 @@ import com.example.demo.model.entity.ProductEntity;
 import com.example.demo.model.entity.WarehouseEntity;
 import com.example.demo.repository.IWarehouseRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,10 +32,10 @@ public class WarehouseService {
      * @param requestedQuantity requested quantity of the product
      * @return warehouse dto with updated quantity
      * @throws ProductNotFoundException      No product exists with given id
+     * @throws IllegalArgumentException      at least one product id is null
      * @throws QuantityNotAvailableException if available quantity is less than requested quantity
-     * @throws BadRequestException           if productId is null
      */
-    public WarehouseDto ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity(Long productId, Integer requestedQuantity) throws ProductNotFoundException, QuantityNotAvailableException, BadRequestException {
+    public WarehouseDto ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity(Long productId, Integer requestedQuantity) throws IllegalArgumentException, ProductNotFoundException, QuantityNotAvailableException {
         log.info("updating available quantity of product with id: {}", productId);
         WarehouseEntity warehouse = findWarehouseEntityByProductId(productId);
         isQuantityEnoughOrElseThrowQuantityNotAvailableException(warehouse.getQuantity(), requestedQuantity);
@@ -46,13 +45,14 @@ public class WarehouseService {
     }
 
     private void isQuantityEnoughOrElseThrowQuantityNotAvailableException(int quantityAvailable, int requestedQuantity) throws QuantityNotAvailableException {
-        if (quantityAvailable >= requestedQuantity) return;
+        if (quantityAvailable >= requestedQuantity)
+            return;
         throw new QuantityNotAvailableException("Quantity not available");
     }
 
-    private WarehouseEntity findWarehouseEntityByProductId(Long productId) throws ProductNotFoundException, BadRequestException {
+    private WarehouseEntity findWarehouseEntityByProductId(Long productId) throws IllegalArgumentException, ProductNotFoundException {
         if (productId == null) {
-            throw new BadRequestException("Product must not be null required");
+            throw new IllegalArgumentException("Product must not be null required");
         }
         return warehouseRepository.findByProduct_Id(productId)
                 .orElseThrow(() -> new ProductNotFoundException("Product id: " + productId + " not found"));

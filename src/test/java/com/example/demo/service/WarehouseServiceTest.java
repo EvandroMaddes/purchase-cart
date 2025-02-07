@@ -6,7 +6,6 @@ import com.example.demo.model.dto.forentity.WarehouseDto;
 import com.example.demo.model.entity.ProductEntity;
 import com.example.demo.model.entity.WarehouseEntity;
 import com.example.demo.repository.IWarehouseRepository;
-import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,7 +36,7 @@ class WarehouseServiceTest {
     }
 
     @Test
-    void ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity_availableQuantityIsEnough_removeRequestQuantity() throws ProductNotFoundException, QuantityNotAvailableException, BadRequestException {
+    void ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity_availableQuantityIsEnough_removeRequestQuantity() throws ProductNotFoundException, QuantityNotAvailableException {
         // arrange
         ProductEntity product = mockProductEntity();
         WarehouseEntity warehouse = new WarehouseEntity();
@@ -57,14 +56,14 @@ class WarehouseServiceTest {
     }
 
     @Test
-    void ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity_productIdIsNull_throwsBadRequestException() {
+    void ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity_productIdIsNull_throwsIllegalArgumentException() {
 
         //act
         try {
             warehouseService.ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity(null, 33);
         } catch (Exception e) {
             //assert
-            Assertions.assertInstanceOf(BadRequestException.class, e);
+            Assertions.assertInstanceOf(IllegalArgumentException.class, e);
             verifyNoInteractions(warehouseRepository);
         }
     }
@@ -106,7 +105,7 @@ class WarehouseServiceTest {
     }
 
     @Test
-    void ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity_availableQuantityIsEnough_WarehouseDtoHasDataEqualsToEntity() throws ProductNotFoundException, QuantityNotAvailableException, BadRequestException {
+    void ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity_availableQuantityIsEnough_WarehouseDtoHasDataEqualsToEntity() throws ProductNotFoundException, QuantityNotAvailableException {
         // arrange
         ProductEntity product = mockProductEntity();
         WarehouseEntity warehouse = new WarehouseEntity();

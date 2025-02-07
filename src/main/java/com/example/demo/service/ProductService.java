@@ -3,11 +3,10 @@ package com.example.demo.service;
 import com.example.demo.exception.ProductNotFoundException;
 import com.example.demo.model.entity.ProductEntity;
 import com.example.demo.repository.IProductRepository;
-import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 /**
- * business logic of product
+ * business logic of products
  */
 @Service
 public class ProductService {
@@ -21,13 +20,12 @@ public class ProductService {
      * Find a product entity by product id
      *
      * @param productId id of the product
-     * @return entity
+     * @return product found
      * @throws ProductNotFoundException No product exists with given id
-     * @throws BadRequestException      if productId is null
      */
-    public ProductEntity findByProductId(Long productId) throws ProductNotFoundException, BadRequestException {
+    public ProductEntity findByProductId(Long productId) throws ProductNotFoundException {
         if (productId == null) {
-            throw new BadRequestException("Product must not be null required");
+            throw new IllegalArgumentException("Product must not be null required");
         }
         return productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Product " + productId + " not found"));
     }
