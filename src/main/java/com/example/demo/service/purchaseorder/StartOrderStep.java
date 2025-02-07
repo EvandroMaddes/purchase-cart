@@ -31,10 +31,11 @@ public class StartOrderStep implements OrderStep {
 
     /**
      * Check list of requested products is not empty
+     *
      * @param items list of products
      * @throws IllegalArgumentException list of product is empty
      */
-    private void checkNotEmptyProductOrderList(List<PurchaseProductDto>  items) throws IllegalArgumentException {
+    private void checkNotEmptyProductOrderList(List<PurchaseProductDto> items) throws IllegalArgumentException {
         if (CollectionUtils.isEmpty(items)) {
             throw new IllegalArgumentException("Empty products request");
         }
@@ -42,13 +43,27 @@ public class StartOrderStep implements OrderStep {
 
     /**
      * Check all product quantity are grater than zero
+     *
      * @param items list of products
      * @throws IllegalArgumentException at least one quantity less than 1
      */
-    private void checkAllQuantityAreGreaterThanZero(List<PurchaseProductDto> items) throws IllegalArgumentException{
-        if (items.stream().allMatch(item -> item.getQuantity() > 0))
-            return;
-        throw new IllegalArgumentException("Invalid quantity requested");
+    private void checkAllQuantityAreGreaterThanZero(List<PurchaseProductDto> items) throws IllegalArgumentException {
+        for (PurchaseProductDto product : items) {
+            productIdIsNotNull(product);
+            quantityIsGraterThanZero(product);
+        }
+    }
+
+    private void quantityIsGraterThanZero(PurchaseProductDto product) {
+        if (product.getQuantity() == null || product.getQuantity() <= 0) {
+            throw new IllegalArgumentException("invalid product quantity");
+        }
+    }
+
+    private void productIdIsNotNull(PurchaseProductDto product) {
+        if (product.getId() == null) {
+            throw new IllegalArgumentException("invalid product id");
+        }
     }
 
     /**
