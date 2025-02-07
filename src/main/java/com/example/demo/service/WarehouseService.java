@@ -33,7 +33,7 @@ public class WarehouseService {
      * @return warehouse dto with updated quantity
      * @throws ProductNotFoundException      No product exists with given id
      * @throws IllegalArgumentException      at least one product id is null
-     * @throws QuantityNotAvailableException if available quantity is less than requested quantity
+     * @throws QuantityNotAvailableException available quantity is less than requested quantity
      */
     public WarehouseDto ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity(Long productId, Integer requestedQuantity) throws IllegalArgumentException, ProductNotFoundException, QuantityNotAvailableException {
         log.info("updating available quantity of product with id: {}", productId);
