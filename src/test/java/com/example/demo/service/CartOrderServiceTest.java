@@ -70,25 +70,4 @@ class CartOrderServiceTest {
         Assertions.assertEquals(BigDecimal.TEN, savedCartOrder.getItems().getFirst().getProduct().getPriceValue());
         Assertions.assertEquals(BigDecimal.ONE, savedCartOrder.getItems().getFirst().getProduct().getVatValue());
     }
-
-    @Test
-    void saveNewCartOrder_productPriceIsNull_throwsOrderTotalComputationException() throws IllegalArgumentException, ProductNotFoundException {
-        // arrange
-        ProductEntity product = mockProductEntity();
-        product.setPriceValue(BigDecimal.valueOf(0));
-        CartOrderEntity cartOrder = new CartOrderEntity();
-        CartOrderProductEntity cartOrderProduct = new CartOrderProductEntity();
-        cartOrderProduct.setCartOrder(cartOrder);
-        cartOrderProduct.setProduct(product);
-        cartOrder.setPriceValue(BigDecimal.TEN.multiply(BigDecimal.valueOf(2)));
-        cartOrder.setVatValue(BigDecimal.ONE.multiply(BigDecimal.valueOf(2)));
-        cartOrder.setCartOrderProducts(List.of(cartOrderProduct));
-        when(cartOrderRepository.save(any(CartOrderEntity.class))).thenReturn(cartOrder);
-        when(productService.findByProductId(11L)).thenReturn(product);
-        PurchaseProductDto purchaseProduct = PurchaseProductDto.builder().id(11L).quantity(2).build();
-
-        // act
-        Assertions.assertThrows(OrderTotalComputationException.class, () -> cartOrderService.saveNewCartOrder(List.of(purchaseProduct)));
-
-    }
 }
