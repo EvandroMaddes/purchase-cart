@@ -14,7 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceTest {
@@ -51,6 +51,7 @@ class ProductServiceTest {
         } catch (Exception e) {
             //assert
             Assertions.assertInstanceOf(BadRequestException.class, e);
+            verifyNoInteractions(productRepository);
         }
     }
 
