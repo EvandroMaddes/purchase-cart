@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface IOrderRepository extends JpaRepository<CartOrderEntity, Long> {
+public interface ICartOrderRepository extends JpaRepository<CartOrderEntity, Long> {
 
 
 }
