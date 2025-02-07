@@ -55,7 +55,7 @@ public class WarehouseService {
             throw new IllegalArgumentException("Product must not be null required");
         }
         return warehouseRepository.findByProduct_Id(productId)
-                .orElseThrow(() -> new ProductNotFoundException("Product id: " + productId + " not found"));
+                .orElseThrow(() -> new ProductNotFoundException("Product id [" + productId + "] not found"));
     }
 
 
