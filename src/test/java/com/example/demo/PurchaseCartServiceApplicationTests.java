@@ -17,10 +17,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-/**
- * end-to-end test used to validate purchase order orchestrator logic.
- * Purchase order flow is tested here
- */
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 @SpringBootTest
 class PurchaseCartServiceApplicationTests {
 
@@ -31,7 +30,10 @@ class PurchaseCartServiceApplicationTests {
     @Autowired
     private IWarehouseRepository iWarehouseRepository;
 
-
+    @Test
+    void contextLoads() {
+        assertThat(purchaseOrderOrchestratorService).isNotNull();
+    }
     @Test
     void issueNewOrderWithSteps_enoughQuantityAvailable() throws Exception {
         // arrange

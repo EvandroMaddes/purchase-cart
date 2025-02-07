@@ -14,8 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class PurchaseOrderOrchestratorServiceTest {
@@ -41,5 +40,20 @@ class PurchaseOrderOrchestratorServiceTest {
 
         // assert
         Assertions.assertNotNull(responseOrderDto);
+    }
+
+    @Test
+    void issueNewOrderWithSteps_productIdIsNull_rethrowsIllegalArgumentException() throws Exception {
+        // arrange
+        RequestOrderDto requestOrderDto = new RequestOrderDto(List.of(
+                new RequestProductDto(null, 3),
+                new RequestProductDto(12L, 4),
+                new RequestProductDto(13L, 2)
+        ));
+        doThrow(new IllegalArgumentException("product id is null")).when(startOrderStep).executeStepOperation(any());
+
+        // act
+        // assert
+        Assertions.assertThrows(IllegalArgumentException.class, () -> purchaseOrderOrchestratorService.issueNewOrderWithSteps(requestOrderDto));
     }
 }

@@ -17,10 +17,12 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+
 /**
- * end-to-end test used to validate purchase order orchestrator logic.
+ * integration test used to validate purchase order orchestrator logic.
  * Purchase order flow rollback logic is tested here
  */
 @SpringBootTest
@@ -35,6 +37,11 @@ class PurchaseCartServiceApplicationRollbackTest {
 
     @Autowired
     private IWarehouseRepository warehouseRepository;
+
+    @Test
+    void contextLoads() {
+        assertThat(purchaseOrderOrchestratorService).isNotNull();
+    }
 
     @Test
     void issueNewOrderWithSteps_removeProductQuantity_exceptionWhileSavingDocument_rollbackPreviousQuantity() {
@@ -52,6 +59,7 @@ class PurchaseCartServiceApplicationRollbackTest {
         Assertions.assertThrows(IllegalArgumentException.class, () -> purchaseOrderOrchestratorService.issueNewOrderWithSteps(requestOrderDto));
 
         // assert on db consistency
+        Assertions.assertNotNull(saved);
         Optional<WarehouseEntity> updatedProduct = warehouseRepository.findById(saved.getId());
         Assertions.assertTrue(updatedProduct.isPresent());
         Assertions.assertEquals(5, updatedProduct.get().getQuantity());

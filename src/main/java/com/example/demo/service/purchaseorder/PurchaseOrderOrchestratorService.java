@@ -84,8 +84,8 @@ public class PurchaseOrderOrchestratorService {
      */
     private PurchaseProductDto mapRequestProductDtoToPurchaseProductDto(RequestProductDto item) {
         return PurchaseProductDto.builder()
-                .id(item.getProductId())
-                .quantity(item.getQuantity()).build();
+                .id(item.productId())
+                .quantity(item.quantity()).build();
     }
 
     /**
