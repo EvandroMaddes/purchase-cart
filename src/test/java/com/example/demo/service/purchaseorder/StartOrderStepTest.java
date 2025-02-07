@@ -19,14 +19,14 @@ class StartOrderStepTest {
     private StartOrderStep startOrderStep;
 
     @Test
-    void executeStateOperation_orderHasNotEmptyProductList_allQuantityGraterThenZero() throws OrderTotalComputationException {
+    void executeStepOperation_orderHasNotEmptyProductList_allQuantityGraterThenZero() throws OrderTotalComputationException {
         // arrange
         PurchaseOrderDto order = PurchaseOrderDto.builder()
                 .items(List.of(PurchaseProductDto.builder().id(11L).quantity(2).build()))
                 .build();
 
         // act
-        startOrderStep.executeStateOperation(order);
+        startOrderStep.executeStepOperation(order);
 
         // assert
         Assertions.assertEquals(1, order.getItems().size());
@@ -36,7 +36,7 @@ class StartOrderStepTest {
     }
 
     @Test
-    void executeStateOperation_orderHasEmptyProductList_throwsIllegalArgumentException() {
+    void executeStepOperation_orderHasEmptyProductList_throwsIllegalArgumentException() {
         // arrange
         PurchaseOrderDto order = PurchaseOrderDto.builder()
                 .items(Collections.emptyList())
@@ -44,12 +44,12 @@ class StartOrderStepTest {
 
         // act
         // assert
-        Assertions.assertThrows(IllegalArgumentException.class, () -> startOrderStep.executeStateOperation(order));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> startOrderStep.executeStepOperation(order));
     }
 
 
     @Test
-    void executeStateOperation_orderHasNotEmptyProductList_allQuantityNotGraterThenZero() {
+    void executeStepOperation_orderHasNotEmptyProductList_allQuantityNotGraterThenZero() {
         // arrange
         PurchaseOrderDto order = PurchaseOrderDto.builder()
                 .items(List.of(PurchaseProductDto.builder().id(11L).quantity(-1).build()))
@@ -57,11 +57,11 @@ class StartOrderStepTest {
 
         // act
         // assert
-        Assertions.assertThrows(IllegalArgumentException.class, () -> startOrderStep.executeStateOperation(order));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> startOrderStep.executeStepOperation(order));
     }
 
     @Test
-    void executeStateOperation_orderHasNotEmptyProductList_allQuantityGraterThenZero_mergeQuantityOfSameProductId() throws OrderTotalComputationException {
+    void executeStepOperation_orderHasNotEmptyProductList_allQuantityGraterThenZero_mergeQuantityOfSameProductId() throws OrderTotalComputationException {
         // arrange
         PurchaseOrderDto order = PurchaseOrderDto.builder()
                 .items(List.of(
@@ -70,7 +70,7 @@ class StartOrderStepTest {
                 .build();
 
         // act
-        startOrderStep.executeStateOperation(order);
+        startOrderStep.executeStepOperation(order);
         // assert
         Assertions.assertEquals(1, order.getItems().size());
         Assertions.assertEquals(11, order.getItems().getFirst().getId());

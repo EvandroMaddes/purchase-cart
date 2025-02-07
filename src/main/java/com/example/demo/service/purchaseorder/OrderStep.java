@@ -11,7 +11,7 @@ import java.util.Optional;
 @Transactional(rollbackFor = Exception.class)
 public interface OrderStep {
 
-    void executeStateOperation(PurchaseOrderDto items) throws  OrderTotalComputationException, ProductNotFoundException, QuantityNotAvailableException;
+    void executeStepOperation(PurchaseOrderDto items) throws  OrderTotalComputationException, ProductNotFoundException, QuantityNotAvailableException;
 
     Optional<OrderStep> next();
 

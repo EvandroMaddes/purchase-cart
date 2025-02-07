@@ -22,7 +22,7 @@ public class SaveNewCartOrderStep implements OrderStep {
     }
 
     @Override
-    public void executeStateOperation(PurchaseOrderDto order) throws OrderTotalComputationException,  ProductNotFoundException {
+    public void executeStepOperation(PurchaseOrderDto order) throws OrderTotalComputationException,  ProductNotFoundException {
         CartOrderDto orderDocument = saveNewCartOrder(order.getItems());
         addCartOrderDataToPurchaseOrderDto(order, orderDocument);
     }

@@ -27,7 +27,7 @@ class UpdateQuantityOrderStepTest {
     private WarehouseService warehouseService;
 
     @Test
-    void executeStateOperation_availableQuantitiesAreEnough() throws ProductNotFoundException {
+    void executeStepOperation_availableQuantitiesAreEnough() throws ProductNotFoundException {
         // arrange
         PurchaseOrderDto order = PurchaseOrderDto.builder()
                 .items(List.of(
@@ -36,7 +36,7 @@ class UpdateQuantityOrderStepTest {
         when(warehouseService.ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity(11L, 3)).thenReturn(null);
 
         // act
-        updateQuantityOrderStep.executeStateOperation(order);
+        updateQuantityOrderStep.executeStepOperation(order);
 
         // assert
         Assertions.assertEquals(1, order.getItems().size());
@@ -45,7 +45,7 @@ class UpdateQuantityOrderStepTest {
     }
 
     @Test
-    void executeStateOperation_availableQuantitiesAreNotEnough_throwsQuantityNotAvailableException() throws ProductNotFoundException {
+    void executeStepOperation_availableQuantitiesAreNotEnough_throwsQuantityNotAvailableException() throws ProductNotFoundException {
         PurchaseOrderDto order = PurchaseOrderDto.builder()
                 .items(List.of(
                         PurchaseProductDto.builder().id(11L).quantity(3).build()
@@ -54,7 +54,7 @@ class UpdateQuantityOrderStepTest {
 
         // act
         // assert
-        Assertions.assertThrows(IllegalArgumentException.class, () -> updateQuantityOrderStep.executeStateOperation(order));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> updateQuantityOrderStep.executeStepOperation(order));
     }
 
     @Test

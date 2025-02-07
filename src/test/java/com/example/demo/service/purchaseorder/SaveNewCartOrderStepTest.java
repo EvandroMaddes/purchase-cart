@@ -36,7 +36,7 @@ class SaveNewCartOrderStepTest {
     }
 
     @Test
-    void executeStateOperation_mapSavedCartOrderToPurchaseOrderDto() throws OrderTotalComputationException, ProductNotFoundException {
+    void executeStepOperation_mapSavedCartOrderToPurchaseOrderDto() throws OrderTotalComputationException, ProductNotFoundException {
         // arrange
         CartOrderDto cartOrderSaved = CartOrderDto.builder()
                 .orderId(1212L)
@@ -58,7 +58,7 @@ class SaveNewCartOrderStepTest {
                 .items(productList)
                 .build();
         // act
-        saveNewCartOrderStep.executeStateOperation(order);
+        saveNewCartOrderStep.executeStepOperation(order);
 
         // assert
         Assertions.assertEquals(1212L, order.getOrderId());
@@ -76,7 +76,7 @@ class SaveNewCartOrderStepTest {
     }
 
     @Test
-    void executeStateOperation_ErrorComputingTotalOrderPrice_throwsOrderTotalComputationException() throws OrderTotalComputationException, ProductNotFoundException {
+    void executeStepOperation_ErrorComputingTotalOrderPrice_throwsOrderTotalComputationException() throws OrderTotalComputationException, ProductNotFoundException {
         // arrange
         List<PurchaseProductDto> productList = List.of(
                 PurchaseProductDto.builder().id(11L).quantity(3).build(),
@@ -86,7 +86,7 @@ class SaveNewCartOrderStepTest {
                 .items(productList)
                 .build();
         // act
-        Assertions.assertThrows(OrderTotalComputationException.class, () -> saveNewCartOrderStep.executeStateOperation(order));
+        Assertions.assertThrows(OrderTotalComputationException.class, () -> saveNewCartOrderStep.executeStepOperation(order));
     }
 
 

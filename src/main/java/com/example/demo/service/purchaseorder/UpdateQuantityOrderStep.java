@@ -23,7 +23,7 @@ public class UpdateQuantityOrderStep implements OrderStep {
     }
 
     @Override
-    public void executeStateOperation(PurchaseOrderDto order) throws ProductNotFoundException, QuantityNotAvailableException {
+    public void executeStepOperation(PurchaseOrderDto order) throws ProductNotFoundException, QuantityNotAvailableException {
         List<PurchaseProductDto> items = order.getItems();
         ifProductQuantitiesAreEnoughThenRemoveRequestedQuantities(items);
     }

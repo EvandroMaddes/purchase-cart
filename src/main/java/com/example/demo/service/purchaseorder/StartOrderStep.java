@@ -22,7 +22,7 @@ public class StartOrderStep implements OrderStep {
     }
 
     @Override
-    public void executeStateOperation(PurchaseOrderDto order) throws OrderTotalComputationException {
+    public void executeStepOperation(PurchaseOrderDto order) throws OrderTotalComputationException {
         // validate input
         checkNotEmptyProductOrderList(order.getItems());
         checkAllQuantityAreGreaterThanZero(order.getItems());
