@@ -60,6 +60,6 @@ class UpdateQuantityOrderStepTest {
     @Test
     void next_SaveDocumentOrderStep() {
         Optional<OrderStep> next = updateQuantityOrderStep.next();
-        Assertions.assertInstanceOf(SaveDocumentOrderStep.class, next.orElseGet(Assertions::fail));
+        Assertions.assertInstanceOf(SaveNewCartOrderStep.class, next.orElseGet(Assertions::fail));
     }
 }

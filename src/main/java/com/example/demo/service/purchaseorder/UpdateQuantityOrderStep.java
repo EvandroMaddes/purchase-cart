@@ -15,11 +15,11 @@ import java.util.Optional;
 @Component
 public class UpdateQuantityOrderStep implements OrderStep {
     private final WarehouseService warehouseService;
-    private final SaveDocumentOrderStep saveDocumentOrderStep;
+    private final SaveNewCartOrderStep saveNewCartOrderStep;
 
-    public UpdateQuantityOrderStep(WarehouseService warehouseService, SaveDocumentOrderStep saveDocumentOrderStep) {
+    public UpdateQuantityOrderStep(WarehouseService warehouseService, SaveNewCartOrderStep saveNewCartOrderStep) {
         this.warehouseService = warehouseService;
-        this.saveDocumentOrderStep = saveDocumentOrderStep;
+        this.saveNewCartOrderStep = saveNewCartOrderStep;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class UpdateQuantityOrderStep implements OrderStep {
 
     @Override
     public Optional<OrderStep> next() {
-        return Optional.of(saveDocumentOrderStep);
+        return Optional.of(saveNewCartOrderStep);
     }
 
 
