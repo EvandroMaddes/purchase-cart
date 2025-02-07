@@ -21,5 +21,5 @@ public class CartOrderProductEntity extends AbstractPersistable<Long> {
     // foreign key on order.id column
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_order_id", referencedColumnName = "id")
-    private CartOrderEntity order;
+    private CartOrderEntity cartOrder;
 }

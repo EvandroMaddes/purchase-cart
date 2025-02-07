@@ -16,17 +16,17 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CartOrderEntity extends AbstractPersistable<Long> {
-    @Column(name = "order_date", nullable = false)
-    private Date orderDate;
+    @Column(name = "creation_date", nullable = false)
+    private Date creationDate;
 
-    @Column(name = "order_price_value")
-    private BigDecimal orderPriceValue;
+    @Column(name = "price_value")
+    private BigDecimal priceValue;
 
-    @Column(name = "order_vat_value")
-    private BigDecimal orderVatValue;
+    @Column(name = "vat_value")
+    private BigDecimal vatValue;
 
     // foreign key on order_product.id column
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "order_product_id", referencedColumnName = "id")
-    List<CartOrderProductEntity> orderProducts;
+    @JoinColumn(name = "cart_order_product_id", referencedColumnName = "id")
+    List<CartOrderProductEntity> cartOrderProducts;
 }
