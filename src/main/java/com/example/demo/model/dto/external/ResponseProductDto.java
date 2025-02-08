@@ -7,6 +7,9 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+/**
+ * product response with details
+ */
 @Builder
 @Getter
 @Setter

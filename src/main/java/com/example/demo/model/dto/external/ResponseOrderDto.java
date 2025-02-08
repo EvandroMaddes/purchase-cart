@@ -7,6 +7,9 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * Order response containing all pricing data
+ */
 @Builder
 @Getter
 public class ResponseOrderDto  implements Serializable {
