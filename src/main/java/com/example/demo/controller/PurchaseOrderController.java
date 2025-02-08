@@ -2,16 +2,16 @@ package com.example.demo.controller;
 
 import com.example.demo.model.dto.external.RequestOrderDto;
 import com.example.demo.model.dto.external.ResponseOrderDto;
-import com.example.demo.service.purchaseorder.PurchaseOrderOrchestratorService;
+import com.example.demo.service.IPurchaseOrderOrchestratorService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1")
 public class PurchaseOrderController {
-    private final PurchaseOrderOrchestratorService purchaseOrderOrchestratorService;
+    private final IPurchaseOrderOrchestratorService purchaseOrderOrchestratorService;
 
-    public PurchaseOrderController(PurchaseOrderOrchestratorService purchaseOrderOrchestratorService) {
+    public PurchaseOrderController(IPurchaseOrderOrchestratorService purchaseOrderOrchestratorService) {
         this.purchaseOrderOrchestratorService = purchaseOrderOrchestratorService;
     }
 

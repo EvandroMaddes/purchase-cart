@@ -1,4 +1,4 @@
-package com.example.demo.service.purchaseorder.integration;
+package com.example.demo.service.orderstep.integration;
 
 import com.example.demo.exception.QuantityNotAvailableException;
 import com.example.demo.model.dto.external.RequestOrderDto;
@@ -15,10 +15,10 @@ import com.example.demo.repository.IWarehouseRepository;
 import com.example.demo.service.implementation.CartOrderService;
 import com.example.demo.service.implementation.ProductService;
 import com.example.demo.service.implementation.WarehouseService;
-import com.example.demo.service.purchaseorder.PurchaseOrderOrchestratorService;
-import com.example.demo.service.purchaseorder.SaveNewCartOrderStep;
-import com.example.demo.service.purchaseorder.StartOrderStep;
-import com.example.demo.service.purchaseorder.UpdateQuantityOrderStep;
+import com.example.demo.service.implementation.PurchaseOrderOrchestratorService;
+import com.example.demo.service.orderstep.SaveNewCartOrderStep;
+import com.example.demo.service.orderstep.StartOrderStep;
+import com.example.demo.service.orderstep.UpdateQuantityOrderStep;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

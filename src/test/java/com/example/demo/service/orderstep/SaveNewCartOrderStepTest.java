@@ -1,4 +1,4 @@
-package com.example.demo.service.purchaseorder;
+package com.example.demo.service.orderstep;
 
 import com.example.demo.exception.OrderTotalComputationException;
 import com.example.demo.exception.ProductNotFoundException;

@@ -1,4 +1,4 @@
-package com.example.demo.service.purchaseorder.integration;
+package com.example.demo.service.orderstep.integration;
 
 import com.example.demo.model.dto.external.RequestOrderDto;
 import com.example.demo.model.dto.external.RequestProductDto;
@@ -6,7 +6,7 @@ import com.example.demo.model.entity.ProductEntity;
 import com.example.demo.model.entity.WarehouseEntity;
 import com.example.demo.repository.ICartOrderRepository;
 import com.example.demo.repository.IWarehouseRepository;
-import com.example.demo.service.purchaseorder.PurchaseOrderOrchestratorService;
+import com.example.demo.service.implementation.PurchaseOrderOrchestratorService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

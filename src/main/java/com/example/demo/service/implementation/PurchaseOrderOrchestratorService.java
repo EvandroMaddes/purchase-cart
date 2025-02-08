@@ -1,4 +1,4 @@
-package com.example.demo.service.purchaseorder;
+package com.example.demo.service.implementation;
 
 import com.example.demo.exception.OrderTotalComputationException;
 import com.example.demo.exception.ProductNotFoundException;
@@ -8,6 +8,9 @@ import com.example.demo.model.dto.external.RequestOrderDto;
 import com.example.demo.model.dto.external.RequestProductDto;
 import com.example.demo.model.dto.external.ResponseOrderDto;
 import com.example.demo.model.dto.external.ResponseProductDto;
+import com.example.demo.service.IPurchaseOrderOrchestratorService;
+import com.example.demo.service.orderstep.OrderStep;
+import com.example.demo.service.orderstep.StartOrderStep;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +20,7 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-public class PurchaseOrderOrchestratorService {
+public class PurchaseOrderOrchestratorService implements IPurchaseOrderOrchestratorService {
     private final OrderStep orderStep;
 
     public PurchaseOrderOrchestratorService(StartOrderStep startOrderStep) {
@@ -37,6 +40,7 @@ public class PurchaseOrderOrchestratorService {
      * @throws ProductNotFoundException       at least one product not found
      */
     @Transactional(rollbackFor = Exception.class)
+    @Override
     public ResponseOrderDto issueNewOrderWithSteps(RequestOrderDto requestOrderDto) throws IllegalArgumentException, OrderTotalComputationException, ProductNotFoundException {
         PurchaseOrderDto order = mapRequestOrderDtoToPurchaseOrderDto(requestOrderDto);
         executePurchaseOrderSteps(order);
