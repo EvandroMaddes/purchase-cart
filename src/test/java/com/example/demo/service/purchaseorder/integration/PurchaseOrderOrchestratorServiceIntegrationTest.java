@@ -14,7 +14,7 @@ import com.example.demo.repository.IProductRepository;
 import com.example.demo.repository.IWarehouseRepository;
 import com.example.demo.service.implementation.CartOrderService;
 import com.example.demo.service.implementation.ProductService;
-import com.example.demo.service.WarehouseService;
+import com.example.demo.service.implementation.WarehouseService;
 import com.example.demo.service.purchaseorder.PurchaseOrderOrchestratorService;
 import com.example.demo.service.purchaseorder.SaveNewCartOrderStep;
 import com.example.demo.service.purchaseorder.StartOrderStep;

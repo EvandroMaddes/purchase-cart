@@ -4,7 +4,7 @@ import com.example.demo.exception.ProductNotFoundException;
 import com.example.demo.exception.QuantityNotAvailableException;
 import com.example.demo.model.dto.PurchaseOrderDto;
 import com.example.demo.model.dto.PurchaseProductDto;
-import com.example.demo.service.WarehouseService;
+import com.example.demo.service.IWarehouseService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,7 +28,7 @@ class UpdateQuantityOrderStepTest {
     private SaveNewCartOrderStep saveNewCartOrderStep;
 
     @Mock
-    private WarehouseService warehouseService;
+    private IWarehouseService warehouseService;
 
     @Test
     void executeStepOperation_availableQuantitiesAreEnough() throws ProductNotFoundException {

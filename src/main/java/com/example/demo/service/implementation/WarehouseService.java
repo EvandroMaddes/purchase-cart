@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.service.implementation;
 
 import com.example.demo.exception.ProductNotFoundException;
 import com.example.demo.exception.QuantityNotAvailableException;
@@ -7,6 +7,7 @@ import com.example.demo.model.dto.forentity.WarehouseDto;
 import com.example.demo.model.entity.ProductEntity;
 import com.example.demo.model.entity.WarehouseEntity;
 import com.example.demo.repository.IWarehouseRepository;
+import com.example.demo.service.IWarehouseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-public class WarehouseService {
+public class WarehouseService implements IWarehouseService {
     private final IWarehouseRepository warehouseRepository;
 
     public WarehouseService(IWarehouseRepository warehouseRepository) {
@@ -35,6 +36,7 @@ public class WarehouseService {
      * @throws IllegalArgumentException      at least one product id is null
      * @throws QuantityNotAvailableException available quantity is less than requested quantity
      */
+    @Override
     public WarehouseDto ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity(Long productId, Integer requestedQuantity) throws IllegalArgumentException, ProductNotFoundException, QuantityNotAvailableException {
         log.info("updating available quantity of product with id: {}", productId);
         WarehouseEntity warehouse = findWarehouseEntityByProductId(productId);

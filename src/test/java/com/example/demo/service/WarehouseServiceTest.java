@@ -6,6 +6,7 @@ import com.example.demo.model.dto.forentity.WarehouseDto;
 import com.example.demo.model.entity.ProductEntity;
 import com.example.demo.model.entity.WarehouseEntity;
 import com.example.demo.repository.IWarehouseRepository;
+import com.example.demo.service.implementation.WarehouseService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

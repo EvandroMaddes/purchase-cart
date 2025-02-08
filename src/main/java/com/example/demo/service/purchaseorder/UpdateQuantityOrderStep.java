@@ -4,7 +4,7 @@ import com.example.demo.exception.ProductNotFoundException;
 import com.example.demo.exception.QuantityNotAvailableException;
 import com.example.demo.model.dto.PurchaseOrderDto;
 import com.example.demo.model.dto.PurchaseProductDto;
-import com.example.demo.service.WarehouseService;
+import com.example.demo.service.IWarehouseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -14,10 +14,10 @@ import java.util.Optional;
 @Slf4j
 @Component
 public class UpdateQuantityOrderStep implements OrderStep {
-    private final WarehouseService warehouseService;
+    private final IWarehouseService warehouseService;
     private final SaveNewCartOrderStep saveNewCartOrderStep;
 
-    public UpdateQuantityOrderStep(WarehouseService warehouseService, SaveNewCartOrderStep saveNewCartOrderStep) {
+    public UpdateQuantityOrderStep(IWarehouseService warehouseService, SaveNewCartOrderStep saveNewCartOrderStep) {
         this.warehouseService = warehouseService;
         this.saveNewCartOrderStep = saveNewCartOrderStep;
     }
