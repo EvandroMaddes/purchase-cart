@@ -8,6 +8,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Order entity: it has order data and a reference to all products of the order
+ */
 @Entity
 @Table(name = "cart_order")
 @Getter

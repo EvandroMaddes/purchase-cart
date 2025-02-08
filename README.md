@@ -1,4 +1,33 @@
 # Purchase-cart-service
+it is a demo project where RESTful API endpoint is exposed. It returns pricing information about new order.
+
+JPA persistence model:
+```mermaid 
+classDiagram
+direction BT
+class CartOrderEntity {
+Date  creationDate
+BigDecimal  priceValue
+BigDecimal  vatValue
+}
+class CartOrderProductEntity {
+int  quantity
+}
+class ProductEntity {
+String  description
+BigDecimal  priceValue
+BigDecimal  vatValue
+}
+class WarehouseEntity {
+int  quantity
+}
+
+CartOrderEntity "0..1" --> "0..*" CartOrderProductEntity
+CartOrderProductEntity "0..*" --> "0..1" CartOrderEntity
+CartOrderProductEntity "0..*" --> "0..1" ProductEntity
+WarehouseEntity "0..1" --> "0..1" ProductEntity
+```
+
 
 ## How to (build-test) run
 
@@ -7,7 +36,7 @@ The instructions below address two scenario:
 1. Docker used on linux
 2. Podman used on windows
 
-## 1. Docker on bash (on ubuntu)
+### 1. Docker on bash (on ubuntu)
 
 Give executable permissions to files in the scripts folder.
 Then build the container image.
@@ -46,7 +75,7 @@ Under the root folder are available also `mvnw` scripts:
 * Allows anyone who clones / checks-out this repo to build the project without having to install Maven first.
 * Ensures that the version of Maven in use is the version with which this project is compatible.
 
-## 2. Podman on powershell (on windows)
+### 2. Podman on powershell (on windows)
 
 Build container image
 

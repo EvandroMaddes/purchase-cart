@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
+/**
+ * Warehouse entity: for each product it stores the quantity available
+ */
 @Entity
 @Table(name = "warehouse")
 @Getter

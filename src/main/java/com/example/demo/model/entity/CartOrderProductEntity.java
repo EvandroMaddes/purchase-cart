@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
+/**
+ * Order product entity: it links an order to its products and store the product quantity
+ */
 @Entity
 @Table(name = "cart_order_product")
 @Getter
