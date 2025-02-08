@@ -1,15 +1,14 @@
-package com.example.demo.model.dto.forentity;
+package com.example.demo.model.dto.internal;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Builder
 @Getter
 @Setter
-public class WarehouseDto {
+public class CartOrderProductDto {
     private int quantity;
     private ProductDto product;
+    private CartOrderDto order;
 }

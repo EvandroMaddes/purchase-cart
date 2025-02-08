@@ -1,4 +1,4 @@
-package com.example.demo.model.dto.forentity;
+package com.example.demo.model.dto.internal;
 
 import lombok.Builder;
 import lombok.Getter;

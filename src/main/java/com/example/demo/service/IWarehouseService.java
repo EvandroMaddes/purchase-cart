@@ -2,7 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.exception.ProductNotFoundException;
 import com.example.demo.exception.QuantityNotAvailableException;
-import com.example.demo.model.dto.forentity.WarehouseDto;
+import com.example.demo.model.dto.internal.WarehouseDto;
 
 public interface IWarehouseService {
     /**

@@ -4,8 +4,8 @@ import com.example.demo.exception.OrderTotalComputationException;
 import com.example.demo.exception.ProductNotFoundException;
 import com.example.demo.model.dto.PurchaseOrderDto;
 import com.example.demo.model.dto.PurchaseProductDto;
-import com.example.demo.model.dto.forentity.CartOrderDto;
-import com.example.demo.model.dto.forentity.CartOrderProductDto;
+import com.example.demo.model.dto.internal.CartOrderDto;
+import com.example.demo.model.dto.internal.CartOrderProductDto;
 import com.example.demo.service.ICartOrderService;
 import org.springframework.stereotype.Component;
 

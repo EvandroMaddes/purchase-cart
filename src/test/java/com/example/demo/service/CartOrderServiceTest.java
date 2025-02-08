@@ -3,7 +3,7 @@ package com.example.demo.service;
 import com.example.demo.exception.OrderTotalComputationException;
 import com.example.demo.exception.ProductNotFoundException;
 import com.example.demo.model.dto.PurchaseProductDto;
-import com.example.demo.model.dto.forentity.CartOrderDto;
+import com.example.demo.model.dto.internal.CartOrderDto;
 import com.example.demo.model.entity.CartOrderEntity;
 import com.example.demo.model.entity.CartOrderProductEntity;
 import com.example.demo.model.entity.ProductEntity;

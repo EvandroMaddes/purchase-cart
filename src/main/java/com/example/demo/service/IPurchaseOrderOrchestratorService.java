@@ -10,7 +10,7 @@ public interface IPurchaseOrderOrchestratorService {
     /**
      * Process new order request.
      * It executes operations define inside each order step (class implementing orderStep interface)
-     * Transactional annotation is needed to guarantee consistency on db data. It ensures that in case of any exception all operations are rolled back.
+     * Transactional annotation is needed to guarantee consistency on db data: it ensures that in case of any exception all operations are rolled back.
      * If services will be divided into microservices then an event-driven architecture would be better.
      *
      * @param requestOrderDto order request data

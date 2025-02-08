@@ -2,8 +2,8 @@ package com.example.demo.service.implementation;
 
 import com.example.demo.exception.ProductNotFoundException;
 import com.example.demo.exception.QuantityNotAvailableException;
-import com.example.demo.model.dto.forentity.ProductDto;
-import com.example.demo.model.dto.forentity.WarehouseDto;
+import com.example.demo.model.dto.internal.ProductDto;
+import com.example.demo.model.dto.internal.WarehouseDto;
 import com.example.demo.model.entity.ProductEntity;
 import com.example.demo.model.entity.WarehouseEntity;
 import com.example.demo.repository.IWarehouseRepository;
