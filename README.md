@@ -3,9 +3,18 @@
 ## How to (build-test) run
 
 The full directory will be mounted under `/mnt/` folder into the docker image built from [Dockerfile](Dockerfile).
+The instructions below address two scenario:
+1. Docker used on linux
+2. Podman used on windows
+
+## 1. Docker on bash (on ubuntu)
+
+Give executable permissions to files in the scripts folder.
+Then build the container image.
 
 ```shell
-podman build -t subito/purchase-cart-service . 
+chmod +x scripts/ -R
+docker build -t subito/purchase-cart-service . 
 ```
 
 The folder scripts contains 3 files:
@@ -18,15 +27,15 @@ The folder scripts contains 3 files:
 * [run.sh](scripts/run.sh): it executes `java -jar` to run the application
 
 ```shell
-podman run --rm --name cart_service_build -v ${pwd}:/mnt -p 9090:9090 -w /mnt subito/purchase-cart-service scripts/build.sh
+docker run --rm --name cart_service_build -v "$(pwd)":/mnt -p 9090:9090 -w /mnt subito/purchase-cart-service ./scripts/build.sh
 ```
 
 ```shell
-podman run --rm --name cart_service_test -v ${pwd}:/mnt -p 9090:9090 -w /mnt subito/purchase-cart-service scripts/tests.sh
+docker run --rm --name cart_service_tests -v "$(pwd)":/mnt -p 9090:9090 -w /mnt subito/purchase-cart-service ./scripts/tests.sh
 ```
 
 ```shell
-podman run --rm --name cart_service_run -v ${pwd}:/mnt -p 9090:9090 -w /mnt subito/purchase-cart-service scripts/run.sh
+docker run --rm --name cart_service_run -v "$(pwd)":/mnt -p 9090:9090 -w /mnt subito/purchase-cart-service ./scripts/run.sh
 ```
 
 - the flag `--rm` is used to delete the container after the task fot it is complete
@@ -36,3 +45,31 @@ Under the root folder are available also `mvnw` scripts:
 
 * Allows anyone who clones / checks-out this repo to build the project without having to install Maven first.
 * Ensures that the version of Maven in use is the version with which this project is compatible.
+
+## 2. Podman on powershell (on windows)
+
+Build container image
+
+```shell
+podman build -t subito/purchase-cart-service . 
+```
+
+Run build script:
+
+```shell
+podman run --rm --name cart_service_build -v ${pwd}:/mnt -p 9090:9090 -w /mnt subito/purchase-cart-service scripts/build.sh
+```
+
+Run test script:
+
+```shell
+podman run --rm --name cart_service_test -v ${pwd}:/mnt -p 9090:9090 -w /mnt subito/purchase-cart-service scripts/tests.sh
+```
+
+Run application:
+
+```shell
+podman run --rm --name cart_service_run -v ${pwd}:/mnt -p 9090:9090 -w /mnt subito/purchase-cart-service scripts/run.sh
+```
+N.B. the commands reported for podman may be also suitable for docker Windows users. 
+Replace `podman` with `docker` in each command: e.g. `docker build -t subito/purchase-cart-service .`
