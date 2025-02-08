@@ -30,7 +30,7 @@ class CartOrderServiceTest {
     @Mock
     private ICartOrderRepository cartOrderRepository;
     @Mock
-    private ProductService productService;
+    private IProductService productService;
 
     /**
      * product with price 10, vat 1, description "mock-product"

@@ -11,7 +11,7 @@ import com.example.demo.model.entity.CartOrderProductEntity;
 import com.example.demo.model.entity.ProductEntity;
 import com.example.demo.repository.ICartOrderRepository;
 import com.example.demo.service.ICartOrderService;
-import com.example.demo.service.ProductService;
+import com.example.demo.service.IProductService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -27,9 +27,9 @@ import java.util.Optional;
 @Service
 public class CartOrderService implements ICartOrderService {
     private final ICartOrderRepository cartOrderRepository;
-    private final ProductService productService;
+    private final IProductService productService;
 
-    public CartOrderService(ICartOrderRepository cartOrderRepository, ProductService productService) {
+    public CartOrderService(ICartOrderRepository cartOrderRepository, IProductService productService) {
         this.cartOrderRepository = cartOrderRepository;
         this.productService = productService;
     }

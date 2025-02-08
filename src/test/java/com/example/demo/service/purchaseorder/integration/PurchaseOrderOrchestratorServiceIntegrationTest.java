@@ -13,7 +13,7 @@ import com.example.demo.repository.ICartOrderRepository;
 import com.example.demo.repository.IProductRepository;
 import com.example.demo.repository.IWarehouseRepository;
 import com.example.demo.service.implementation.CartOrderService;
-import com.example.demo.service.ProductService;
+import com.example.demo.service.implementation.ProductService;
 import com.example.demo.service.WarehouseService;
 import com.example.demo.service.purchaseorder.PurchaseOrderOrchestratorService;
 import com.example.demo.service.purchaseorder.SaveNewCartOrderStep;

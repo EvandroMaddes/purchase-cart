@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.exception.ProductNotFoundException;
 import com.example.demo.model.entity.ProductEntity;
 import com.example.demo.repository.IProductRepository;
+import com.example.demo.service.implementation.ProductService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +14,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceTest {
