@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.service.implementation;
 
 import com.example.demo.exception.OrderTotalComputationException;
 import com.example.demo.exception.ProductNotFoundException;
@@ -10,6 +10,8 @@ import com.example.demo.model.entity.CartOrderEntity;
 import com.example.demo.model.entity.CartOrderProductEntity;
 import com.example.demo.model.entity.ProductEntity;
 import com.example.demo.repository.ICartOrderRepository;
+import com.example.demo.service.ICartOrderService;
+import com.example.demo.service.ProductService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -23,30 +25,13 @@ import java.util.Optional;
  * business logic of orders (relation order products)
  */
 @Service
-public class CartOrderService {
+public class CartOrderService implements ICartOrderService {
     private final ICartOrderRepository cartOrderRepository;
     private final ProductService productService;
 
     public CartOrderService(ICartOrderRepository cartOrderRepository, ProductService productService) {
         this.cartOrderRepository = cartOrderRepository;
         this.productService = productService;
-    }
-
-    /**
-     * Map from purchase product dto list to cart order entity.
-     * Save new cart order entity.
-     * Map from cart order entity to cart order dto
-     *
-     * @param productList list of purchased product
-     * @return order details
-     * @throws OrderTotalComputationException result of order data computation is an empty optional
-     * @throws ProductNotFoundException       at least one product id does not exist
-     */
-    public CartOrderDto saveNewCartOrder(List<PurchaseProductDto> productList) throws OrderTotalComputationException, ProductNotFoundException {
-        // save order
-        CartOrderEntity cartOrderEntity = mapToPurchaseOrderDtoListToCartOrderEntity(productList);
-        CartOrderEntity savedCartOrder = cartOrderRepository.save(cartOrderEntity);
-        return mapCartOrderEntityToOrderDto(savedCartOrder);
     }
 
     /**
@@ -155,4 +140,22 @@ public class CartOrderService {
         return value.multiply(BigDecimal.valueOf(product.getQuantity()));
     }
 
+    /**
+     * Map from purchase product dto list to cart order entity.
+     * Save new cart order entity.
+     * Map from cart order entity to cart order dto
+     *
+     * @param productList list of purchased product
+     * @return order details
+     * @throws OrderTotalComputationException result of order data computation is an empty optional
+     * @throws ProductNotFoundException       at least one product id does not exist
+     */
+    @Override
+    public CartOrderDto saveNewCartOrder(List<PurchaseProductDto> productList) throws OrderTotalComputationException, ProductNotFoundException {
+        // save order
+        CartOrderEntity cartOrderEntity = mapToPurchaseOrderDtoListToCartOrderEntity(productList);
+        CartOrderEntity savedCartOrder = cartOrderRepository.save(cartOrderEntity);
+        return mapCartOrderEntityToOrderDto(savedCartOrder);
+
+    }
 }

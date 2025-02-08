@@ -7,7 +7,7 @@ import com.example.demo.model.dto.PurchaseProductDto;
 import com.example.demo.model.dto.forentity.CartOrderDto;
 import com.example.demo.model.dto.forentity.CartOrderProductDto;
 import com.example.demo.model.dto.forentity.ProductDto;
-import com.example.demo.service.CartOrderService;
+import com.example.demo.service.ICartOrderService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +27,7 @@ class SaveNewCartOrderStepTest {
     @InjectMocks
     private SaveNewCartOrderStep saveNewCartOrderStep;
     @Mock
-    private CartOrderService cartOrderService;
+    private ICartOrderService cartOrderService;
 
     private PurchaseProductDto findProductById(List<PurchaseProductDto> items, Long id) {
         return items.stream()

@@ -6,7 +6,7 @@ import com.example.demo.model.dto.PurchaseOrderDto;
 import com.example.demo.model.dto.PurchaseProductDto;
 import com.example.demo.model.dto.forentity.CartOrderDto;
 import com.example.demo.model.dto.forentity.CartOrderProductDto;
-import com.example.demo.service.CartOrderService;
+import com.example.demo.service.ICartOrderService;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,14 +15,14 @@ import java.util.Optional;
 
 @Component
 public class SaveNewCartOrderStep implements OrderStep {
-    private final CartOrderService cartOrderService;
+    private final ICartOrderService cartOrderService;
 
-    public SaveNewCartOrderStep(CartOrderService cartOrderService) {
+    public SaveNewCartOrderStep(ICartOrderService cartOrderService) {
         this.cartOrderService = cartOrderService;
     }
 
     @Override
-    public void executeStepOperation(PurchaseOrderDto order) throws OrderTotalComputationException,  ProductNotFoundException {
+    public void executeStepOperation(PurchaseOrderDto order) throws OrderTotalComputationException, ProductNotFoundException {
         CartOrderDto orderDocument = saveNewCartOrder(order.getItems());
         addCartOrderDataToPurchaseOrderDto(order, orderDocument);
     }
@@ -59,10 +59,11 @@ public class SaveNewCartOrderStep implements OrderStep {
 
     /**
      * Save new order
+     *
      * @param items list of products
      * @return order saved
      * @throws OrderTotalComputationException error while computing total vat, total price
-     * @throws ProductNotFoundException at least one product is not found
+     * @throws ProductNotFoundException       at least one product is not found
      */
     private CartOrderDto saveNewCartOrder(List<PurchaseProductDto> items) throws OrderTotalComputationException, ProductNotFoundException {
         return cartOrderService.saveNewCartOrder(items);

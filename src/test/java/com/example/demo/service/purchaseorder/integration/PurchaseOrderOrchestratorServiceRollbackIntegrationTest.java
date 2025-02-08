@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.service.purchaseorder.integration;
 
 import com.example.demo.model.dto.external.RequestOrderDto;
 import com.example.demo.model.dto.external.RequestProductDto;
@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
  * Purchase order flow rollback logic is tested here
  */
 @SpringBootTest
-class PurchaseCartServiceApplicationRollbackTest {
+class PurchaseOrderOrchestratorServiceRollbackIntegrationTest {
 
 
     @Autowired
