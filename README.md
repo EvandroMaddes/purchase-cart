@@ -145,8 +145,27 @@ podman run --rm --name cart_service_run -v ${pwd}:/mnt -p 9090:9090 -w /mnt subi
 N.B. the commands reported for podman may be also suitable for docker Windows users.
 Replace `podman` with `docker` in every command: e.g. `docker build -t subito/purchase-cart-service .`
 
+### Test structure
+
+Test structure reflects the src directory structure.
+Each class presenting business logic is tested using unit tests (the one annotated with
+`@ExtendWith(MockitoExtension.class)`).
+Class [PurchaseOrderOrchestratorService](src/main/java/com/example/demo/service/implementation/PurchaseOrderOrchestratorService.java)
+has also integration tests to validate the purchase order flow.
+Class [PurchaseOrderController](src/main/java/com/example/demo/controller/PurchaseOrderController.java) has an
+end-to-end test.
+It simulates a http call to the exposed endpoint _'/api/v1/order'_ and validate the response data.
+N.B data is used on by classes annotated with `@SpringBootTest` load databse test data from
+the [populate-products-test](src/test/resources/data/populate-products-test.sql)
+sql file.
+
 ### Data insertion
 
+For this project an in memory database is used. This does not influence the application code that is agnostic on the
+database implementation.
+Each time the application run, it initializes the schema on startup from configuration properties of the main Hibernate EntityManagerFactory based on standard JPA properties and HibernateSettings.
+On exit, it cleans all the schema (drops the tables).
+This behavior can be customized on the [application.properties](src/main/resources/application.properties) file
 Database data are populated by [populate-products](src/main/resources/data/populate-products.sql) sql file.
 If you want to add new data then you have to add your insert statements on this file.
 Then build the container image and run the build, test and run scripts (the script test is not mandatory, but it is
