@@ -3,9 +3,8 @@ package com.example.demo.service.orderstep.integration;
 import com.example.demo.model.dto.external.RequestOrderDto;
 import com.example.demo.model.dto.external.RequestProductDto;
 import com.example.demo.model.entity.ProductEntity;
-import com.example.demo.model.entity.WarehouseEntity;
 import com.example.demo.repository.ICartOrderRepository;
-import com.example.demo.repository.IWarehouseRepository;
+import com.example.demo.repository.IProductRepository;
 import com.example.demo.service.implementation.PurchaseOrderOrchestratorService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -36,7 +35,7 @@ class PurchaseOrderOrchestratorServiceRollbackIntegrationTest {
     private ICartOrderRepository cartOrderRepository;
 
     @Autowired
-    private IWarehouseRepository warehouseRepository;
+    private IProductRepository productRepository;
 
     @Test
     void contextLoads() {
@@ -49,20 +48,18 @@ class PurchaseOrderOrchestratorServiceRollbackIntegrationTest {
         productEntity.setPriceValue(BigDecimal.TEN);
         productEntity.setVatValue(BigDecimal.ONE);
         productEntity.setDescription("test-product");
-        WarehouseEntity warehouseEntity = new WarehouseEntity();
-        warehouseEntity.setQuantity(5);
-        warehouseEntity.setProduct(productEntity);
-        WarehouseEntity saved = warehouseRepository.saveAndFlush(warehouseEntity);
+        productEntity.setAvailableQuantity(5);
+        ProductEntity saved = productRepository.saveAndFlush(productEntity);
         RequestOrderDto requestOrderDto = new RequestOrderDto(List.of(new RequestProductDto(saved.getId(), 3)));
         when(cartOrderRepository.save(any())).thenThrow(new IllegalArgumentException("Test rollback on product quantities"));
         // act
         Assertions.assertThrows(IllegalArgumentException.class, () -> purchaseOrderOrchestratorService.issueNewOrderWithSteps(requestOrderDto));
 
         // assert on db consistency
-        Assertions.assertNotNull(saved);
-        Optional<WarehouseEntity> updatedProduct = warehouseRepository.findById(saved.getId());
+        Assertions.assertNotNull(saved.getId());
+        Optional<ProductEntity> updatedProduct = productRepository.findById(saved.getId());
         Assertions.assertTrue(updatedProduct.isPresent());
-        Assertions.assertEquals(5, updatedProduct.get().getQuantity());
+        Assertions.assertEquals(5, updatedProduct.get().getAvailableQuantity());
     }
 
 }

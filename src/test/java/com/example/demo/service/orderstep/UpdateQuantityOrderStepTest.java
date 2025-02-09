@@ -4,7 +4,7 @@ import com.example.demo.exception.ProductNotFoundException;
 import com.example.demo.exception.QuantityNotAvailableException;
 import com.example.demo.model.dto.PurchaseOrderDto;
 import com.example.demo.model.dto.PurchaseProductDto;
-import com.example.demo.service.IWarehouseService;
+import com.example.demo.service.IProductService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,7 +28,7 @@ class UpdateQuantityOrderStepTest {
     private SaveNewCartOrderStep saveNewCartOrderStep;
 
     @Mock
-    private IWarehouseService warehouseService;
+    private IProductService productService;
 
     @Test
     void executeStepOperation_availableQuantitiesAreEnough() throws ProductNotFoundException {
@@ -37,7 +37,7 @@ class UpdateQuantityOrderStepTest {
                 .items(List.of(
                         PurchaseProductDto.builder().id(11L).quantity(3).build()
                 )).build();
-        when(warehouseService.ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity(11L, 3)).thenReturn(null);
+        when(productService.ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity(11L, 3)).thenReturn(null);
 
         // act
         updateQuantityOrderStep.executeStepOperation(order);
@@ -54,7 +54,7 @@ class UpdateQuantityOrderStepTest {
                 .items(List.of(
                         PurchaseProductDto.builder().id(11L).quantity(3).build()
                 )).build();
-        when(warehouseService.ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity(11L, 3)).thenThrow(new QuantityNotAvailableException("quantity is not available"));
+        when(productService.ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity(11L, 3)).thenThrow(new QuantityNotAvailableException("quantity is not available"));
 
         // act
         // assert

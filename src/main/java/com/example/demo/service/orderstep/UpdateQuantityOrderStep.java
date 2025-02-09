@@ -4,7 +4,7 @@ import com.example.demo.exception.ProductNotFoundException;
 import com.example.demo.exception.QuantityNotAvailableException;
 import com.example.demo.model.dto.PurchaseOrderDto;
 import com.example.demo.model.dto.PurchaseProductDto;
-import com.example.demo.service.IWarehouseService;
+import com.example.demo.service.IProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -14,11 +14,11 @@ import java.util.Optional;
 @Slf4j
 @Component
 public class UpdateQuantityOrderStep implements OrderStep {
-    private final IWarehouseService warehouseService;
+    private final IProductService productService;
     private final SaveNewCartOrderStep saveNewCartOrderStep;
 
-    public UpdateQuantityOrderStep(IWarehouseService warehouseService, SaveNewCartOrderStep saveNewCartOrderStep) {
-        this.warehouseService = warehouseService;
+    public UpdateQuantityOrderStep(IProductService productService, SaveNewCartOrderStep saveNewCartOrderStep) {
+        this.productService = productService;
         this.saveNewCartOrderStep = saveNewCartOrderStep;
     }
 
@@ -45,7 +45,7 @@ public class UpdateQuantityOrderStep implements OrderStep {
      */
     private void ifProductQuantitiesAreEnoughThenRemoveRequestedQuantities(List<PurchaseProductDto> items) throws IllegalArgumentException, ProductNotFoundException, QuantityNotAvailableException {
         for (PurchaseProductDto item : items) {
-            warehouseService.ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity(item.getId(), item.getQuantity());
+            productService.ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity(item.getId(), item.getQuantity());
         }
     }
 

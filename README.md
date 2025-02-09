@@ -18,14 +18,10 @@ String  description
 BigDecimal  priceValue
 BigDecimal  vatValue
 }
-class WarehouseEntity {
-int  quantity
-}
-
 CartOrderEntity "0..1" --> "0..*" CartOrderProductEntity
 CartOrderProductEntity "0..*" --> "0..1" CartOrderEntity
 CartOrderProductEntity "0..*" --> "0..1" ProductEntity
-WarehouseEntity "0..1" --> "0..1" ProductEntity
+
 ```
 
 

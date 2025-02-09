@@ -5,8 +5,7 @@ import com.example.demo.model.dto.external.RequestProductDto;
 import com.example.demo.model.dto.external.ResponseOrderDto;
 import com.example.demo.model.dto.external.ResponseProductDto;
 import com.example.demo.model.entity.ProductEntity;
-import com.example.demo.model.entity.WarehouseEntity;
-import com.example.demo.repository.IWarehouseRepository;
+import com.example.demo.repository.IProductRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +17,6 @@ import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 
 /**
@@ -36,7 +33,7 @@ class PurchaseOrderControllerTest {
     private TestRestTemplate restTemplate;
 
     @Autowired
-    private IWarehouseRepository warehouseRepository;
+    private IProductRepository productRepository;
 
     @Test
     void createNewOrder_ok_() {
@@ -51,12 +48,11 @@ class PurchaseOrderControllerTest {
         // assert
         Assertions.assertTrue(responseOrderDtoResponseEntity.getStatusCode().isSameCodeAs(HttpStatus.OK));
         ResponseOrderDto responseOrder = responseOrderDtoResponseEntity.getBody();
-        WarehouseEntity warehouseEntity = warehouseRepository.findByProduct_Id(12L).orElseGet((Assertions::fail));
+        ProductEntity savedProduct = productRepository.findById(12L).orElseGet((Assertions::fail));
         Assertions.assertNotNull(responseOrder);
         Assertions.assertNotNull(responseOrder.getOrderId());
         Assertions.assertNotNull(responseOrder.getItems());
         ResponseProductDto firstItem = responseOrder.getItems().getFirst();
-        ProductEntity savedProduct = warehouseEntity.getProduct();
         Assertions.assertNotNull(firstItem);
         Assertions.assertNotNull(firstItem.getId());
         Assertions.assertEquals(savedProduct.getPriceValue(), firstItem.getPrice());

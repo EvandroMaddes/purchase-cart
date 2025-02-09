@@ -27,4 +27,7 @@ public class ProductEntity extends AbstractPersistable<Long> {
     @Column(name = "vat_value")
     private BigDecimal vatValue;
 
+    @Column(name = "available_quantity", nullable = false)
+    private int availableQuantity;
+
 }

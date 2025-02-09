@@ -7,14 +7,11 @@ import com.example.demo.model.dto.external.ResponseOrderDto;
 import com.example.demo.model.entity.CartOrderEntity;
 import com.example.demo.model.entity.CartOrderProductEntity;
 import com.example.demo.model.entity.ProductEntity;
-import com.example.demo.model.entity.WarehouseEntity;
 import com.example.demo.repository.ICartOrderProductRepository;
 import com.example.demo.repository.ICartOrderRepository;
 import com.example.demo.repository.IProductRepository;
-import com.example.demo.repository.IWarehouseRepository;
 import com.example.demo.service.implementation.CartOrderService;
 import com.example.demo.service.implementation.ProductService;
-import com.example.demo.service.implementation.WarehouseService;
 import com.example.demo.service.implementation.PurchaseOrderOrchestratorService;
 import com.example.demo.service.orderstep.SaveNewCartOrderStep;
 import com.example.demo.service.orderstep.StartOrderStep;
@@ -41,14 +38,11 @@ import static org.mockito.Mockito.when;
  */
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {PurchaseOrderOrchestratorService.class, StartOrderStep.class,
-        UpdateQuantityOrderStep.class, SaveNewCartOrderStep.class, ProductService.class, WarehouseService.class,
+        UpdateQuantityOrderStep.class, SaveNewCartOrderStep.class, ProductService.class,
         CartOrderService.class, IProductRepository.class})
 class PurchaseOrderOrchestratorServiceIntegrationTest {
     @Autowired
     private PurchaseOrderOrchestratorService purchaseOrderOrchestratorService;
-
-    @MockitoBean
-    private IWarehouseRepository warehouseRepository;
 
     @MockitoBean
     private ICartOrderRepository cartOrderRepository;
@@ -64,12 +58,11 @@ class PurchaseOrderOrchestratorServiceIntegrationTest {
         ProductEntity productEntity = new ProductEntity();
         productEntity.setPriceValue(BigDecimal.TEN);
         productEntity.setVatValue(BigDecimal.ONE);
-        WarehouseEntity warehouseEntity = new WarehouseEntity();
-        warehouseEntity.setQuantity(5);
-        warehouseEntity.setProduct(productEntity);
-        WarehouseEntity updatedWarehouseEntity = new WarehouseEntity();
-        updatedWarehouseEntity.setQuantity(2);
-        updatedWarehouseEntity.setProduct(productEntity);
+        productEntity.setAvailableQuantity(5);
+        ProductEntity updatedProductEntity = new ProductEntity();
+        updatedProductEntity.setPriceValue(BigDecimal.TEN);
+        updatedProductEntity.setVatValue(BigDecimal.ONE);
+        updatedProductEntity.setAvailableQuantity(2);
         RequestOrderDto requestOrderDto = new RequestOrderDto(List.of(new RequestProductDto(11L, 3)));
 
         CartOrderEntity cartOrder = new CartOrderEntity();
@@ -80,8 +73,7 @@ class PurchaseOrderOrchestratorServiceIntegrationTest {
         cartOrder.setPriceValue(BigDecimal.TEN.multiply(BigDecimal.valueOf(3)));
         cartOrder.setVatValue(BigDecimal.ONE.multiply(BigDecimal.valueOf(3)));
         cartOrder.setCartOrderProducts(List.of(cartOrderProduct));
-        when(warehouseRepository.findByProduct_Id(anyLong())).thenReturn(Optional.of(warehouseEntity));
-        when(warehouseRepository.save(any())).thenReturn(updatedWarehouseEntity);
+        when(productRepository.save(any())).thenReturn(updatedProductEntity);
         when(productRepository.findById(anyLong())).thenReturn(Optional.of(productEntity));
         when(cartOrderRepository.save(any())).thenReturn(cartOrder);
 
@@ -100,7 +92,7 @@ class PurchaseOrderOrchestratorServiceIntegrationTest {
     @Test
     void issueNewOrderWithSteps_notEnoughQuantityAvailable() {
         // arrange
-        when(warehouseRepository.findByProduct_Id(anyLong())).thenThrow(new QuantityNotAvailableException("Not enough quantity"));
+        when(productRepository.findById(anyLong())).thenThrow(new QuantityNotAvailableException("Not enough quantity"));
         RequestOrderDto requestOrderDto = new RequestOrderDto(List.of(new RequestProductDto(1L, 6)));
 
         // act
