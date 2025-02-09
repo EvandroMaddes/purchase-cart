@@ -44,10 +44,10 @@ class SaveNewCartOrderStepTest {
                 .orderPrice(BigDecimal.TWO.multiply(BigDecimal.valueOf(4)).add(BigDecimal.TEN.multiply(BigDecimal.valueOf(3))))
                 .items(List.of(
                         CartOrderProductDto.builder()
-                                .product(ProductDto.builder().id(11L).priceValue(BigDecimal.TEN).vatValue(BigDecimal.TWO).build())
+                                .product(ProductDto.builder().id(11L).grossPriceValue(BigDecimal.TEN).vatValue(BigDecimal.TWO).build())
                                 .quantity(3).build(),
                         CartOrderProductDto.builder()
-                                .product(ProductDto.builder().id(12L).priceValue(BigDecimal.TWO).vatValue(BigDecimal.ONE).build())
+                                .product(ProductDto.builder().id(12L).grossPriceValue(BigDecimal.TWO).vatValue(BigDecimal.ONE).build())
                                 .quantity(4).build()
                 )).build();
         List<PurchaseProductDto> productList = List.of(

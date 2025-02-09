@@ -5,6 +5,7 @@ import com.example.demo.model.dto.external.RequestProductDto;
 import com.example.demo.model.entity.ProductEntity;
 import com.example.demo.repository.ICartOrderRepository;
 import com.example.demo.repository.IProductRepository;
+import com.example.demo.repository.IVatRateRepository;
 import com.example.demo.service.implementation.PurchaseOrderOrchestratorService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -36,6 +37,8 @@ class PurchaseOrderOrchestratorServiceRollbackIntegrationTest {
 
     @Autowired
     private IProductRepository productRepository;
+    @Autowired
+    private IVatRateRepository vatRateRepository;
 
     @Test
     void contextLoads() {
@@ -45,8 +48,8 @@ class PurchaseOrderOrchestratorServiceRollbackIntegrationTest {
     @Test
     void issueNewOrderWithSteps_removeProductQuantity_exceptionWhileSavingDocument_rollbackPreviousQuantity() {
         ProductEntity productEntity = new ProductEntity();
-        productEntity.setPriceValue(BigDecimal.TEN);
-        productEntity.setVatValue(BigDecimal.ONE);
+        productEntity.setUnitPrice(BigDecimal.TEN);
+        productEntity.setVatRate(vatRateRepository.findById(1L).get());
         productEntity.setDescription("test-product");
         productEntity.setAvailableQuantity(5);
         ProductEntity saved = productRepository.saveAndFlush(productEntity);

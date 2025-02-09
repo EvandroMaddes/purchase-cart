@@ -6,6 +6,7 @@ import com.example.demo.model.dto.PurchaseOrderDto;
 import com.example.demo.model.dto.PurchaseProductDto;
 import com.example.demo.model.dto.internal.CartOrderDto;
 import com.example.demo.model.dto.internal.CartOrderProductDto;
+import com.example.demo.model.dto.internal.ProductDto;
 import com.example.demo.service.ICartOrderService;
 import org.springframework.stereotype.Component;
 
@@ -46,10 +47,11 @@ public class SaveNewCartOrderStep implements OrderStep {
     private List<PurchaseProductDto> mapCartOrderProductDtoListToPurchaseProductDtoList(List<CartOrderProductDto> items) {
         List<PurchaseProductDto> purchaseProductList = new ArrayList<>();
         for (CartOrderProductDto item : items) {
+            ProductDto product = item.getProduct();
             PurchaseProductDto purchaseProduct = PurchaseProductDto.builder()
-                    .id(item.getProduct().getId())
-                    .price(item.getProduct().getPriceValue())
-                    .vat(item.getProduct().getVatValue())
+                    .id(product.getId())
+                    .price(product.getGrossPriceValue())
+                    .vat(product.getVatValue())
                     .quantity(item.getQuantity())
                     .build();
             purchaseProductList.add(purchaseProduct);

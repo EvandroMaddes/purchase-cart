@@ -4,6 +4,7 @@ import com.example.demo.exception.ProductNotFoundException;
 import com.example.demo.exception.QuantityNotAvailableException;
 import com.example.demo.model.dto.internal.ProductDto;
 import com.example.demo.model.entity.ProductEntity;
+import com.example.demo.model.entity.VatRateEntity;
 import com.example.demo.repository.IProductRepository;
 import com.example.demo.service.implementation.ProductService;
 import org.junit.jupiter.api.Assertions;
@@ -14,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.*;
@@ -28,21 +30,29 @@ class ProductServiceTest {
     @Mock
     private IProductRepository productRepository;
 
+    private ProductEntity mockProductEntity() {
+        VatRateEntity vatRateEntity = new VatRateEntity();
+        vatRateEntity.setPercentage(0.22f);
+        ProductEntity mockProduct = new ProductEntity();
+        mockProduct.setUnitPrice(BigDecimal.TEN);
+        mockProduct.setVatRate(vatRateEntity);
+        mockProduct.setDescription("mock-product");
+        return mockProduct;
+    }
+
     @Test
     void findByProductEntity_productIsAvailable() throws ProductNotFoundException {
         // arrange
-        ProductEntity mockProduct = new ProductEntity();
-        mockProduct.setPriceValue(BigDecimal.TEN);
-        mockProduct.setVatValue(BigDecimal.ONE);
-        mockProduct.setDescription("mock-product");
+
+        ProductEntity mockProduct = mockProductEntity();
         when(productRepository.findById(11L)).thenReturn(Optional.of(mockProduct));
 
         // act
         ProductEntity product = productService.findByProductId(11L);
 
         // assert
-        Assertions.assertEquals(BigDecimal.TEN, product.getPriceValue());
-        Assertions.assertEquals(BigDecimal.ONE, product.getVatValue());
+        Assertions.assertEquals(BigDecimal.valueOf(12.20f).setScale(2, RoundingMode.HALF_UP), product.getGrossPriceValue());
+        Assertions.assertEquals(BigDecimal.valueOf(2.20f).setScale(2, RoundingMode.HALF_UP), product.getVatValue());
         Assertions.assertEquals("mock-product", product.getDescription());
     }
 
@@ -63,13 +73,6 @@ class ProductServiceTest {
         Assertions.assertThrows(ProductNotFoundException.class, () -> productService.findByProductId(11L));
     }
 
-    private ProductEntity mockProductEntity() {
-        ProductEntity mockProduct = new ProductEntity();
-        mockProduct.setPriceValue(BigDecimal.TEN);
-        mockProduct.setVatValue(BigDecimal.ONE);
-        mockProduct.setDescription("mock-product");
-        return mockProduct;
-    }
 
     @Test
     void ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity_availableQuantityIsEnough_removeRequestQuantity() throws ProductNotFoundException, QuantityNotAvailableException {
@@ -147,8 +150,8 @@ class ProductServiceTest {
 
         // assert
         Assertions.assertEquals(67, productDto.getAvailableQuantity());
-        Assertions.assertEquals(BigDecimal.TEN, productDto.getPriceValue());
-        Assertions.assertEquals(BigDecimal.ONE, productDto.getVatValue());
+        Assertions.assertEquals(BigDecimal.valueOf(12.20f).setScale(2, RoundingMode.HALF_UP), productDto.getGrossPriceValue());
+        Assertions.assertEquals(BigDecimal.valueOf(2.20f).setScale(2, RoundingMode.HALF_UP), productDto.getVatValue());
 
     }
 }

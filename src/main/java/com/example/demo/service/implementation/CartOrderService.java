@@ -95,7 +95,7 @@ public class CartOrderService implements ICartOrderService {
     private ProductDto mapProductEntityToProductDto(ProductEntity product) {
         return ProductDto.builder()
                 .id(product.getId())
-                .priceValue(product.getPriceValue())
+                .grossPriceValue(product.getGrossPriceValue())
                 .description(product.getDescription())
                 .vatValue(product.getVatValue())
                 .build();
@@ -124,7 +124,7 @@ public class CartOrderService implements ICartOrderService {
      */
     private BigDecimal computeOrderPrice(List<CartOrderProductEntity> cartOrderProductList) throws OrderTotalComputationException {
         Optional<BigDecimal> orderPrice = cartOrderProductList.stream()
-                .map(orderProduct -> multiplyByQuantity(orderProduct.getProduct().getPriceValue(), orderProduct))
+                .map(orderProduct -> multiplyByQuantity(orderProduct.getProduct().getGrossPriceValue(), orderProduct))
                 .reduce(BigDecimal::add);
         return orderPrice.orElseThrow(() -> new OrderTotalComputationException("Error computing order price"));
     }

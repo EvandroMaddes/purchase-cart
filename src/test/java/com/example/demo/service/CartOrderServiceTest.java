@@ -7,6 +7,7 @@ import com.example.demo.model.dto.internal.CartOrderDto;
 import com.example.demo.model.entity.CartOrderEntity;
 import com.example.demo.model.entity.CartOrderProductEntity;
 import com.example.demo.model.entity.ProductEntity;
+import com.example.demo.model.entity.VatRateEntity;
 import com.example.demo.repository.ICartOrderRepository;
 import com.example.demo.service.implementation.CartOrderService;
 import org.junit.jupiter.api.Assertions;
@@ -17,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -37,8 +39,10 @@ class CartOrderServiceTest {
      */
     private ProductEntity mockProductEntity() {
         ProductEntity mockProduct = new ProductEntity();
-        mockProduct.setPriceValue(BigDecimal.TEN);
-        mockProduct.setVatValue(BigDecimal.ONE);
+        mockProduct.setUnitPrice(BigDecimal.TEN);
+        VatRateEntity vatRate = new VatRateEntity();
+        vatRate.setPercentage(0.22f);
+        mockProduct.setVatRate(vatRate);
         mockProduct.setDescription("mock-product");
         return mockProduct;
     }
@@ -52,8 +56,8 @@ class CartOrderServiceTest {
         cartOrderProduct.setCartOrder(cartOrder);
         cartOrderProduct.setProduct(product);
         cartOrderProduct.setQuantity(2);
-        cartOrder.setPriceValue(BigDecimal.TEN.multiply(BigDecimal.valueOf(2)));
-        cartOrder.setVatValue(BigDecimal.ONE.multiply(BigDecimal.valueOf(2)));
+        cartOrder.setPriceValue(product.getGrossPriceValue().multiply(BigDecimal.TWO));
+        cartOrder.setVatValue(product.getVatValue().multiply(BigDecimal.TWO));
         cartOrder.setCartOrderProducts(List.of(cartOrderProduct));
         when(cartOrderRepository.save(any(CartOrderEntity.class))).thenReturn(cartOrder);
         when(productService.findByProductId(11L)).thenReturn(product);
@@ -63,12 +67,12 @@ class CartOrderServiceTest {
         CartOrderDto savedCartOrder = cartOrderService.saveNewCartOrder(List.of(purchaseProduct));
 
         // assert
-        Assertions.assertEquals(BigDecimal.TEN.multiply(BigDecimal.valueOf(2)), savedCartOrder.getOrderPrice());
-        Assertions.assertEquals(BigDecimal.ONE.multiply(BigDecimal.valueOf(2)), savedCartOrder.getOrderVat());
+        Assertions.assertEquals(BigDecimal.valueOf(24.40f).setScale(2, RoundingMode.HALF_UP), savedCartOrder.getOrderPrice());
+        Assertions.assertEquals(BigDecimal.valueOf(4.40f).setScale(2, RoundingMode.HALF_UP), savedCartOrder.getOrderVat());
         Assertions.assertEquals(1, savedCartOrder.getItems().size());
         Assertions.assertEquals(1, savedCartOrder.getItems().size());
         Assertions.assertEquals(2, savedCartOrder.getItems().getFirst().getQuantity());
-        Assertions.assertEquals(BigDecimal.TEN, savedCartOrder.getItems().getFirst().getProduct().getPriceValue());
-        Assertions.assertEquals(BigDecimal.ONE, savedCartOrder.getItems().getFirst().getProduct().getVatValue());
+        Assertions.assertEquals(BigDecimal.valueOf(12.20).setScale(2, RoundingMode.HALF_UP), savedCartOrder.getItems().getFirst().getProduct().getGrossPriceValue());
+        Assertions.assertEquals(BigDecimal.valueOf(2.20).setScale(2, RoundingMode.HALF_UP), savedCartOrder.getItems().getFirst().getProduct().getVatValue());
     }
 }

@@ -70,7 +70,7 @@ public class ProductService implements IProductService {
     private ProductDto mapProductEntityToProductDto(ProductEntity product) {
         return ProductDto.builder()
                 .id(product.getId())
-                .priceValue(product.getPriceValue())
+                .grossPriceValue(product.getGrossPriceValue())
                 .description(product.getDescription())
                 .vatValue(product.getVatValue())
                 .availableQuantity(product.getAvailableQuantity())

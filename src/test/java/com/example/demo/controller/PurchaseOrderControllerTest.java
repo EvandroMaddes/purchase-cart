@@ -55,9 +55,9 @@ class PurchaseOrderControllerTest {
         ResponseProductDto firstItem = responseOrder.getItems().getFirst();
         Assertions.assertNotNull(firstItem);
         Assertions.assertNotNull(firstItem.getId());
-        Assertions.assertEquals(savedProduct.getPriceValue(), firstItem.getPrice());
+        Assertions.assertEquals(savedProduct.getGrossPriceValue(), firstItem.getPrice());
         Assertions.assertEquals(savedProduct.getVatValue(), firstItem.getVat());
-        Assertions.assertEquals(savedProduct.getPriceValue().multiply(BigDecimal.TWO), responseOrder.getOrderPrice());
+        Assertions.assertEquals(savedProduct.getGrossPriceValue().multiply(BigDecimal.TWO), responseOrder.getOrderPrice());
         Assertions.assertEquals(savedProduct.getVatValue().multiply(BigDecimal.TWO), responseOrder.getOrderVat());
 
     }

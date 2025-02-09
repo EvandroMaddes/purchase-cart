@@ -7,6 +7,7 @@ import com.example.demo.model.dto.external.ResponseOrderDto;
 import com.example.demo.model.entity.CartOrderEntity;
 import com.example.demo.model.entity.CartOrderProductEntity;
 import com.example.demo.model.entity.ProductEntity;
+import com.example.demo.model.entity.VatRateEntity;
 import com.example.demo.repository.ICartOrderProductRepository;
 import com.example.demo.repository.ICartOrderRepository;
 import com.example.demo.repository.IProductRepository;
@@ -25,6 +26,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,13 +57,15 @@ class PurchaseOrderOrchestratorServiceIntegrationTest {
     @Test
     void issueNewOrderWithSteps_enoughQuantityAvailable() throws Exception {
         // arrange
+        VatRateEntity vatRate = new VatRateEntity();
+        vatRate.setPercentage(0.22f);
         ProductEntity productEntity = new ProductEntity();
-        productEntity.setPriceValue(BigDecimal.TEN);
-        productEntity.setVatValue(BigDecimal.ONE);
+        productEntity.setUnitPrice(BigDecimal.TEN);
+        productEntity.setVatRate(vatRate);
         productEntity.setAvailableQuantity(5);
         ProductEntity updatedProductEntity = new ProductEntity();
-        updatedProductEntity.setPriceValue(BigDecimal.TEN);
-        updatedProductEntity.setVatValue(BigDecimal.ONE);
+        updatedProductEntity.setUnitPrice(BigDecimal.TEN);
+        updatedProductEntity.setVatRate(vatRate);
         updatedProductEntity.setAvailableQuantity(2);
         RequestOrderDto requestOrderDto = new RequestOrderDto(List.of(new RequestProductDto(11L, 3)));
 
@@ -70,8 +74,8 @@ class PurchaseOrderOrchestratorServiceIntegrationTest {
         cartOrderProduct.setCartOrder(cartOrder);
         cartOrderProduct.setProduct(productEntity);
         cartOrderProduct.setQuantity(3);
-        cartOrder.setPriceValue(BigDecimal.TEN.multiply(BigDecimal.valueOf(3)));
-        cartOrder.setVatValue(BigDecimal.ONE.multiply(BigDecimal.valueOf(3)));
+        cartOrder.setPriceValue(updatedProductEntity.getGrossPriceValue().multiply(BigDecimal.valueOf(3)));
+        cartOrder.setVatValue(updatedProductEntity.getVatValue().multiply(BigDecimal.valueOf(3)));
         cartOrder.setCartOrderProducts(List.of(cartOrderProduct));
         when(productRepository.save(any())).thenReturn(updatedProductEntity);
         when(productRepository.findById(anyLong())).thenReturn(Optional.of(productEntity));
@@ -81,12 +85,12 @@ class PurchaseOrderOrchestratorServiceIntegrationTest {
         ResponseOrderDto responseOrderDto = purchaseOrderOrchestratorService.issueNewOrderWithSteps(requestOrderDto);
 
         // assert on result
-        Assertions.assertEquals(BigDecimal.TEN.intValueExact() * 3, responseOrderDto.getOrderPrice().intValueExact());
-        Assertions.assertEquals(BigDecimal.ONE.intValueExact() * 3, responseOrderDto.getOrderVat().intValueExact());
+        Assertions.assertEquals(BigDecimal.valueOf(36.60f).setScale(2, RoundingMode.HALF_UP), responseOrderDto.getOrderPrice());
+        Assertions.assertEquals(BigDecimal.valueOf(6.60f).setScale(2, RoundingMode.HALF_UP), responseOrderDto.getOrderVat());
         Assertions.assertEquals(1, responseOrderDto.getItems().size());
         Assertions.assertEquals(3, responseOrderDto.getItems().getFirst().getQuantity());
-        Assertions.assertEquals(BigDecimal.TEN.intValueExact(), responseOrderDto.getItems().getFirst().getPrice().intValueExact());
-        Assertions.assertEquals(BigDecimal.ONE.intValueExact(), responseOrderDto.getItems().getFirst().getVat().intValueExact());
+        Assertions.assertEquals(BigDecimal.valueOf(12.20f).setScale(2, RoundingMode.HALF_UP), responseOrderDto.getItems().getFirst().getPrice());
+        Assertions.assertEquals(BigDecimal.valueOf(2.20f).setScale(2, RoundingMode.HALF_UP), responseOrderDto.getItems().getFirst().getVat());
     }
 
     @Test
