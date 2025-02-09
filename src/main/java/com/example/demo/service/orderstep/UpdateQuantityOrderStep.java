@@ -37,6 +37,14 @@ public class UpdateQuantityOrderStep implements OrderStep {
         return Optional.of(saveNewCartOrderStep);
     }
 
+    /**
+     * The step order name
+     */
+    @Override
+    public String name() {
+        return "UpdateQuantityOrderStep";
+    }
+
 
     /**
      * Check that each product requested quantity is available, and remove it.

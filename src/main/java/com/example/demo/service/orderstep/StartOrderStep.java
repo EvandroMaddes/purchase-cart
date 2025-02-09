@@ -32,6 +32,19 @@ public class StartOrderStep implements OrderStep {
         mergeProductRequestWithSameProductId(purchaseOrder);
     }
 
+    @Override
+    public Optional<OrderStep> next() {
+        return Optional.of(updateQuantityOrderStep);
+    }
+
+    /**
+     * The step order name
+     */
+    @Override
+    public String name() {
+        return "StartOrderStep";
+    }
+
     /**
      * Check list of requested products is not empty
      *
@@ -94,10 +107,5 @@ public class StartOrderStep implements OrderStep {
         return items.stream().map(PurchaseProductDto::getId).collect(Collectors.toSet());
     }
 
-
-    @Override
-    public Optional<OrderStep> next() {
-        return Optional.of(updateQuantityOrderStep);
-    }
 
 }

@@ -36,6 +36,14 @@ public class SaveNewCartOrderStep implements OrderStep {
         return Optional.empty();
     }
 
+    /**
+     * The step order name
+     */
+    @Override
+    public String name() {
+        return "SaveNewCartOrderStep";
+    }
+
 
     private void addCartOrderDataToPurchaseOrderDto(PurchaseOrderDto order, CartOrderDto orderSaved) {
         order.setOrderId(orderSaved.getOrderId());

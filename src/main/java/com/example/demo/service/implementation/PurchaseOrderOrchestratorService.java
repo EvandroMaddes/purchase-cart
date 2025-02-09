@@ -49,6 +49,7 @@ public class PurchaseOrderOrchestratorService implements IPurchaseOrderOrchestra
 
     /**
      * Loop over every order step and execute operation all step operations
+     *
      * @param order order request data
      * @throws IllegalArgumentException       at least one product has invalid data
      * @throws OrderTotalComputationException error while computing order data
@@ -59,15 +60,26 @@ public class PurchaseOrderOrchestratorService implements IPurchaseOrderOrchestra
         try {
             while (step.isPresent()) {
                 // execute
-                log.info("step: {}", step.get().getClass().getSimpleName());
+                log.info("step: {}", getOrderStepName(step));
                 step.get().executeStepOperation(order);
                 // go to next state
                 step = step.get().next();
             }
         } catch (Exception e) {
-            log.error("step: {} failed for exception: {}", step.map(value -> value.getClass().getSimpleName()).orElse("(name not available)"), e.getMessage());
+            log.error("step: {} failed for exception: {}",
+                    getOrderStepName(step),
+                    e.getMessage());
             throw e;
         }
+    }
+
+    /**
+     * If step is present the return its name otherwise return not available name stirng
+     * @param step order step required name
+     * @return name of the order step
+     */
+    private String getOrderStepName(Optional<OrderStep> step) {
+        return step.isPresent() ? step.get().name() : "order step name not available";
     }
 
     /**

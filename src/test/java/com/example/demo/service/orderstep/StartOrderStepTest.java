@@ -87,4 +87,10 @@ class StartOrderStepTest {
         Optional<OrderStep> next = startOrderStep.next();
         Assertions.assertInstanceOf(UpdateQuantityOrderStep.class, next.orElseGet(Assertions::fail));
     }
+
+    @Test
+    void name_UpdateQuantityOrderStep() {
+        String name = startOrderStep.name();
+        Assertions.assertEquals("StartOrderStep", name);
+    }
 }

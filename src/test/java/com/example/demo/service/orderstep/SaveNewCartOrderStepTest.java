@@ -89,11 +89,16 @@ class SaveNewCartOrderStepTest {
         Assertions.assertThrows(OrderTotalComputationException.class, () -> saveNewCartOrderStep.executeStepOperation(order));
     }
 
-
     @Test
     void next() {
         Optional<OrderStep> next = saveNewCartOrderStep.next();
         Assertions.assertTrue(next.isEmpty());
 
+    }
+
+    @Test
+    void name_UpdateQuantityOrderStep() {
+        String name = saveNewCartOrderStep.name();
+        Assertions.assertEquals("SaveNewCartOrderStep", name);
     }
 }

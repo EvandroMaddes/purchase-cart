@@ -22,9 +22,13 @@ public interface OrderStep {
 
     /**
      * The next order step
-     * @return next order step
      */
     Optional<OrderStep> next();
+
+    /**
+     * The step order name
+     */
+    String name();
 
 
 }
