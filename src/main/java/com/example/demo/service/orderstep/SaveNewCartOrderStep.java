@@ -51,7 +51,7 @@ public class SaveNewCartOrderStep implements OrderStep {
             PurchaseProductDto purchaseProduct = PurchaseProductDto.builder()
                     .id(product.getId())
                     .price(product.getGrossPriceValue())
-                    .vat(product.getVatValue())
+                    .vat(product.getVatPriceValue())
                     .quantity(item.getQuantity())
                     .build();
             purchaseProductList.add(purchaseProduct);

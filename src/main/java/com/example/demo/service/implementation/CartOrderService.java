@@ -97,7 +97,7 @@ public class CartOrderService implements ICartOrderService {
                 .id(product.getId())
                 .grossPriceValue(product.getGrossPriceValue())
                 .description(product.getDescription())
-                .vatValue(product.getVatValue())
+                .vatPriceValue(product.getVatValue())
                 .build();
     }
 

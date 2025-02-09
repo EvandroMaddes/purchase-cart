@@ -151,7 +151,7 @@ class ProductServiceTest {
         // assert
         Assertions.assertEquals(67, productDto.getAvailableQuantity());
         Assertions.assertEquals(BigDecimal.valueOf(12.20f).setScale(2, RoundingMode.HALF_UP), productDto.getGrossPriceValue());
-        Assertions.assertEquals(BigDecimal.valueOf(2.20f).setScale(2, RoundingMode.HALF_UP), productDto.getVatValue());
+        Assertions.assertEquals(BigDecimal.valueOf(2.20f).setScale(2, RoundingMode.HALF_UP), productDto.getVatPriceValue());
 
     }
 }

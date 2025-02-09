@@ -13,6 +13,6 @@ public class ProductDto {
     private Long id;
     private String description;
     private BigDecimal grossPriceValue;
-    private BigDecimal vatValue;
+    private BigDecimal vatPriceValue;
     private int availableQuantity;
 }

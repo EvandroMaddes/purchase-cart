@@ -73,6 +73,6 @@ class CartOrderServiceTest {
         Assertions.assertEquals(1, savedCartOrder.getItems().size());
         Assertions.assertEquals(2, savedCartOrder.getItems().getFirst().getQuantity());
         Assertions.assertEquals(BigDecimal.valueOf(12.20).setScale(2, RoundingMode.HALF_UP), savedCartOrder.getItems().getFirst().getProduct().getGrossPriceValue());
-        Assertions.assertEquals(BigDecimal.valueOf(2.20).setScale(2, RoundingMode.HALF_UP), savedCartOrder.getItems().getFirst().getProduct().getVatValue());
+        Assertions.assertEquals(BigDecimal.valueOf(2.20).setScale(2, RoundingMode.HALF_UP), savedCartOrder.getItems().getFirst().getProduct().getVatPriceValue());
     }
 }
