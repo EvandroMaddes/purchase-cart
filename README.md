@@ -2,6 +2,8 @@
 
 This is a demo project where a RESTful API endpoint is exposed. It returns pricing information about new order.
 
+it is based on java (v21) and uses [spring boot](https://spring.io/projects/spring-boot) as framework (v3.4.2).
+
 ## Architecture overview
 
 ### Model
