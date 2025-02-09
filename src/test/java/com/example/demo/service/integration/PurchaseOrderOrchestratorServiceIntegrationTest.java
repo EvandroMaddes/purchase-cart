@@ -1,4 +1,4 @@
-package com.example.demo.service.orderstep.integration;
+package com.example.demo.service.integration;
 
 import com.example.demo.exception.QuantityNotAvailableException;
 import com.example.demo.model.dto.external.RequestOrderDto;
