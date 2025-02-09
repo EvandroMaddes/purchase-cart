@@ -4,23 +4,29 @@ it is a demo project where RESTful API endpoint is exposed. It returns pricing i
 JPA persistence model:
 ```mermaid 
 classDiagram
-direction BT
-class CartOrderEntity {
-Date  creationDate
-BigDecimal  priceValue
-BigDecimal  vatValue
-}
-class CartOrderProductEntity {
-int  quantity
-}
-class ProductEntity {
-String  description
-BigDecimal  priceValue
-BigDecimal  vatValue
-}
-CartOrderEntity "0..1" --> "0..*" CartOrderProductEntity
-CartOrderProductEntity "0..*" --> "0..1" CartOrderEntity
-CartOrderProductEntity "0..*" --> "0..1" ProductEntity
+  direction BT
+   class CartOrderEntity {
+    Date  creationDate
+    BigDecimal  priceValue
+    BigDecimal  vatValue
+  }
+  class CartOrderProductEntity {
+    int  quantity
+  }
+  class ProductEntity {
+    int  availableQuantity
+    String  description
+    BigDecimal  unitPrice
+  }
+  class VatRateEntity {
+    String  description
+    Float  percentage
+  }
+
+  CartOrderEntity "0..1" --> "0..*" CartOrderProductEntity
+  CartOrderProductEntity "0..*" --> "0..1" CartOrderEntity
+  CartOrderProductEntity "0..*" --> "0..1" ProductEntity
+  ProductEntity "0..1" --> "0..1" VatRateEntity
 
 ```
 
