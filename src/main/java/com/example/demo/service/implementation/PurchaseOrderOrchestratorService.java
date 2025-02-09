@@ -48,7 +48,7 @@ public class PurchaseOrderOrchestratorService implements IPurchaseOrderOrchestra
     }
 
     /**
-     * Loop over each order step and execute operation all step operations
+     * Loop over every order step and execute operation all step operations
      * @param order order request data
      * @throws IllegalArgumentException       at least one product has invalid data
      * @throws OrderTotalComputationException error while computing order data

@@ -28,7 +28,7 @@ public class UpdateQuantityOrderStep implements OrderStep {
     @Override
     public void executeStepOperation(PurchaseOrderDto purchaseOrder) throws ProductNotFoundException, QuantityNotAvailableException {
         List<PurchaseProductDto> items = purchaseOrder.getItems();
-        ifProductQuantitiesAreEnoughThenRemoveRequestedQuantities(items);
+        reserveProductsQuantity(items);
     }
 
 
@@ -46,7 +46,7 @@ public class UpdateQuantityOrderStep implements OrderStep {
      * @throws IllegalArgumentException      at least one product id is null
      * @throws QuantityNotAvailableException available quantity is less than requested quantity
      */
-    private void ifProductQuantitiesAreEnoughThenRemoveRequestedQuantities(List<PurchaseProductDto> items) throws IllegalArgumentException, ProductNotFoundException, QuantityNotAvailableException {
+    private void reserveProductsQuantity(List<PurchaseProductDto> items) throws IllegalArgumentException, ProductNotFoundException, QuantityNotAvailableException {
         for (PurchaseProductDto item : items) {
             productService.ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity(item.getId(), item.getQuantity());
         }
