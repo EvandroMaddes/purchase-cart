@@ -22,10 +22,13 @@ public class SaveNewCartOrderStep implements OrderStep {
         this.cartOrderService = cartOrderService;
     }
 
+    /**
+     * Save new order and add order details to purchase order object
+     */
     @Override
-    public void executeStepOperation(PurchaseOrderDto order) throws OrderTotalComputationException, ProductNotFoundException {
-        CartOrderDto orderDocument = saveNewCartOrder(order.getItems());
-        addCartOrderDataToPurchaseOrderDto(order, orderDocument);
+    public void executeStepOperation(PurchaseOrderDto purchaseOrder) throws OrderTotalComputationException, ProductNotFoundException {
+        CartOrderDto orderDocument = saveNewCartOrder(purchaseOrder.getItems());
+        addCartOrderDataToPurchaseOrderDto(purchaseOrder, orderDocument);
     }
 
     @Override

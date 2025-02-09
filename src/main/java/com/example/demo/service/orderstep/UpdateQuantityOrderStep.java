@@ -22,9 +22,12 @@ public class UpdateQuantityOrderStep implements OrderStep {
         this.saveNewCartOrderStep = saveNewCartOrderStep;
     }
 
+    /**
+     * If available quantities are enough then remove the requested quantities
+     */
     @Override
-    public void executeStepOperation(PurchaseOrderDto order) throws ProductNotFoundException, QuantityNotAvailableException {
-        List<PurchaseProductDto> items = order.getItems();
+    public void executeStepOperation(PurchaseOrderDto purchaseOrder) throws ProductNotFoundException, QuantityNotAvailableException {
+        List<PurchaseProductDto> items = purchaseOrder.getItems();
         ifProductQuantitiesAreEnoughThenRemoveRequestedQuantities(items);
     }
 
@@ -36,7 +39,7 @@ public class UpdateQuantityOrderStep implements OrderStep {
 
 
     /**
-     * Check that each product requested quantity is available
+     * Check that each product requested quantity is available, and remove it.
      *
      * @param items list of products
      * @throws ProductNotFoundException      No product exists with given id

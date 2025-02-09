@@ -21,12 +21,15 @@ public class StartOrderStep implements OrderStep {
         this.updateQuantityOrderStep = updateQuantityOrderStep;
     }
 
+    /**
+     * Validate selected products: product id must not be null, requested quantities are not negative
+     */
     @Override
-    public void executeStepOperation(PurchaseOrderDto order) throws OrderTotalComputationException {
+    public void executeStepOperation(PurchaseOrderDto purchaseOrder) throws OrderTotalComputationException, IllegalArgumentException {
         // validate input
-        checkNotEmptyProductOrderList(order.getItems());
-        checkAllQuantityAreGreaterThanZero(order.getItems());
-        mergeProductRequestWithSameProductId(order);
+        checkNotEmptyProductOrderList(purchaseOrder.getItems());
+        checkAllQuantityAreGreaterThanZero(purchaseOrder.getItems());
+        mergeProductRequestWithSameProductId(purchaseOrder);
     }
 
     /**
@@ -68,7 +71,7 @@ public class StartOrderStep implements OrderStep {
 
     /**
      * In case the input order has more than one entry for the same product id.
-     * Then merge the input quantity of product with the same product id
+     * Then merge the input quantities of a product with the same product id.
      *
      * @param order order
      * @throws OrderTotalComputationException computation error while computing the product quantity
@@ -76,16 +79,19 @@ public class StartOrderStep implements OrderStep {
     private void mergeProductRequestWithSameProductId(PurchaseOrderDto order) throws OrderTotalComputationException {
         List<PurchaseProductDto> items = order.getItems();
         List<PurchaseProductDto> mergedItems = new ArrayList<>();
-        Set<Long> distinctProductIds = items.stream().map(PurchaseProductDto::getId).collect(Collectors.toSet());
-        for (Long id : distinctProductIds) {
+        for (Long id : getDistinctItems(items)) {
             Integer totalQuantity = items.stream()
                     .filter(productDto -> productDto.getId().equals(id))
                     .map(PurchaseProductDto::getQuantity)
                     .reduce(Integer::sum)
-                    .orElseThrow(() -> new OrderTotalComputationException("error merging product quantity"));
+                    .orElseThrow(() -> new OrderTotalComputationException("error merging product quantities"));
             mergedItems.add(PurchaseProductDto.builder().id(id).quantity(totalQuantity).build());
         }
         order.setItems(mergedItems);
+    }
+
+    private Set<Long> getDistinctItems(List<PurchaseProductDto> items) {
+        return items.stream().map(PurchaseProductDto::getId).collect(Collectors.toSet());
     }
 
 
