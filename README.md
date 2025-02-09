@@ -71,6 +71,7 @@ The instructions below address two scenario:
 
 ### 1. Docker on bash (on ubuntu)
 
+From the root of the project folder.
 Give executable permissions to files in the scripts folder.
 Then build the container image.
 
@@ -116,6 +117,7 @@ Under the root folder are available also `mvnw` scripts:
 
 ### 2. Podman on powershell (on windows)
 
+From the root of the project folder.
 Build container image:
 
 ```shell
