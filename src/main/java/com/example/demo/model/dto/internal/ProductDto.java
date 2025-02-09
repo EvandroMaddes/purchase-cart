@@ -14,4 +14,5 @@ public class ProductDto {
     private String description;
     private BigDecimal priceValue;
     private BigDecimal vatValue;
+    private int availableQuantity;
 }

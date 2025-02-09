@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.exception.ProductNotFoundException;
+import com.example.demo.exception.QuantityNotAvailableException;
+import com.example.demo.model.dto.internal.ProductDto;
 import com.example.demo.model.entity.ProductEntity;
 import com.example.demo.repository.IProductRepository;
 import com.example.demo.service.implementation.ProductService;
@@ -14,8 +16,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceTest {
@@ -46,27 +48,107 @@ class ProductServiceTest {
 
     @Test
     void findByProductEntity_productIdIsNull_throwsIllegalArgumentException() {
-        try {
-            // act
-            productService.findByProductId(null);
-        } catch (Exception e) {
-            //assert
-            Assertions.assertInstanceOf(IllegalArgumentException.class, e);
-            verifyNoInteractions(productRepository);
-        }
+        // act
+        // assert
+        Assertions.assertThrows(IllegalArgumentException.class, () -> productService.findByProductId(null));
+        verifyNoInteractions(productRepository);
     }
 
     @Test
     void findByProductEntity_productIsNotAvailable_throwsProductNotFoundException() {
         // arrange
         when(productRepository.findById(11L)).thenReturn(Optional.empty());
+        // act
+        // assert
+        Assertions.assertThrows(ProductNotFoundException.class, () -> productService.findByProductId(11L));
+    }
 
-        try {
-            // act
-            productService.findByProductId(11L);
-        } catch (Exception e) {
-            //assert
-            Assertions.assertInstanceOf(ProductNotFoundException.class, e);
-        }
+    private ProductEntity mockProductEntity() {
+        ProductEntity mockProduct = new ProductEntity();
+        mockProduct.setPriceValue(BigDecimal.TEN);
+        mockProduct.setVatValue(BigDecimal.ONE);
+        mockProduct.setDescription("mock-product");
+        return mockProduct;
+    }
+
+    @Test
+    void ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity_availableQuantityIsEnough_removeRequestQuantity() throws ProductNotFoundException, QuantityNotAvailableException {
+        // arrange
+        ProductEntity mockProduct = mockProductEntity();
+        mockProduct.setAvailableQuantity(100);
+
+        ProductEntity productUpdated = mockProductEntity();
+        productUpdated.setAvailableQuantity(67);
+
+        when(productRepository.findById(11L)).thenReturn(Optional.of(mockProduct));
+        when(productRepository.save(any(ProductEntity.class))).thenReturn(productUpdated);
+
+        // act
+        productService.ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity(11L, 33);
+
+        // assert
+        verify(productRepository, times(1)).save(argThat(entity -> entity.getAvailableQuantity() == 67));
+    }
+
+    @Test
+    void ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity_productIdIsNull_throwsIllegalArgumentException() {
+
+        // act
+        // assert
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> productService.ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity(null, 33));
+        verifyNoInteractions(productRepository);
+
+    }
+
+    @Test
+    void ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity_productIdNotExist_throwsProductNotFoundException() {
+        // arrange
+        when(productRepository.findById(11L)).thenReturn(Optional.empty());
+
+        // act
+        // assert
+        Assertions.assertThrows(ProductNotFoundException.class,
+                () -> productService.ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity(11L, 33));
+        verify(productRepository, times(1)).findById(anyLong());
+        verify(productRepository, times(0)).save(any());
+
+    }
+
+    @Test
+    void ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity_availableQuantityIsNotEnough_throwsQuantityNotAvailableException() {
+        // arrange
+        ProductEntity product = mockProductEntity();
+        product.setAvailableQuantity(10);
+        when(productRepository.findById(11L)).thenReturn(Optional.of(product));
+
+        // act
+        // assert
+        Assertions.assertThrows(QuantityNotAvailableException.class, () -> productService.ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity(11L, 33));
+        verify(productRepository, times(1)).findById(anyLong());
+        verify(productRepository, times(0)).save(any());
+
+    }
+
+    @Test
+    void ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity_availableQuantityIsEnough_WarehouseDtoHasDataEqualsToEntity() throws ProductNotFoundException, QuantityNotAvailableException {
+        // arrange
+        ProductEntity mockProduct = mockProductEntity();
+        mockProduct.setAvailableQuantity(100);
+
+        ProductEntity productUpdated = mockProductEntity();
+        productUpdated.setAvailableQuantity(67);
+
+        when(productRepository.findById(11L)).thenReturn(Optional.of(mockProduct));
+        when(productRepository.save(any(ProductEntity.class))).thenReturn(productUpdated);
+
+        // act
+        ProductDto productDto = productService.ifQuantityAvailableIsEnoughThenRemoveRequestedQuantity(11L, 33);
+
+        // assert
+        Assertions.assertEquals(67, productDto.getAvailableQuantity());
+        Assertions.assertEquals(BigDecimal.TEN, productDto.getPriceValue());
+        Assertions.assertEquals(BigDecimal.ONE, productDto.getVatValue());
+
     }
 }

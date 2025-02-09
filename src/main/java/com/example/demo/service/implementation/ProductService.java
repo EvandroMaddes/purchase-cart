@@ -73,6 +73,7 @@ public class ProductService implements IProductService {
                 .priceValue(product.getPriceValue())
                 .description(product.getDescription())
                 .vatValue(product.getVatValue())
+                .availableQuantity(product.getAvailableQuantity())
                 .build();
     }
 }
