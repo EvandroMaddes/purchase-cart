@@ -4,5 +4,5 @@
 dir="$(dirname "$0")"
 cd "$dir/../" || return
 
-# Use --offline to avoid downloading dependencies if they are already available
-mvn clean package
+# test will be executed by the tests.sh script
+mvn clean package -Dmaven.test.skip=true
