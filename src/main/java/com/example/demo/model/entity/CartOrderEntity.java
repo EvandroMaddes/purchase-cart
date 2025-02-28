@@ -28,8 +28,7 @@ public class CartOrderEntity extends AbstractPersistable<Long> {
     @Column(name = "vat_value")
     private BigDecimal vatValue;
 
-    // foreign key on order_product.id column
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "cart_order_product_id", referencedColumnName = "id")
+    // foreign key on cart_order_product.id column
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "cartOrder")
     List<CartOrderProductEntity> cartOrderProducts;
 }

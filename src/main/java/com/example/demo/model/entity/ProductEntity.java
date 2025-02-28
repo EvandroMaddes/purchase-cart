@@ -27,7 +27,7 @@ public class ProductEntity extends AbstractPersistable<Long> {
     private int availableQuantity;
 
     // foreign key on vat_rate.id column
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "vat_rate_id", referencedColumnName = "id")
     private VatRateEntity vatRate;
 
