@@ -60,13 +60,22 @@ public class ProductService implements IProductService {
         return mapProductEntityToProductDto(saved);
     }
 
+    /**
+     * If available quantity is not enough throws exception
+     *
+     * @param quantityAvailable available quantity
+     * @param requestedQuantity requested quantity
+     * @throws QuantityNotAvailableException requested quantity is grater than available quantity
+     */
     private void isQuantityEnoughOrElseThrowQuantityNotAvailableException(int quantityAvailable, int requestedQuantity) throws QuantityNotAvailableException {
         if (quantityAvailable >= requestedQuantity)
             return;
         throw new QuantityNotAvailableException("Quantity not available");
     }
 
-
+    /**
+     * Mapper: from product entity to product dto
+     */
     private ProductDto mapProductEntityToProductDto(ProductEntity product) {
         return ProductDto.builder()
                 .id(product.getId())
